@@ -734,6 +734,13 @@ p {
     margin-bottom: 2rem;
 }
 
+#booking-date {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
 .section-heading-row {
     margin-bottom: 1rem;
 }

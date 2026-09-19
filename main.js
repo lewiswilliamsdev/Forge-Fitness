@@ -288,6 +288,14 @@ bookingDateInput.addEventListener("change", function(event){
     summaryDate.textContent = booking.date;
     })
 
+    const noAvailabilityMessage = document.getElementById("no-availability-message");
+
+    if (appointmentSlots.children.length === 0) {
+    noAvailabilityMessage.removeAttribute("hidden");
+    } else {
+    noAvailabilityMessage.setAttribute("hidden", "");
+    }
+
 appointmentSlots.addEventListener("click", function(event) {
     event.preventDefault();
 

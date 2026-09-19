@@ -1,0 +1,1524 @@
+/* ========================================
+    1. DESIGN TOKENS
+======================================== */
+
+:root {
+    --color-background: #f5f7f6;
+    --color-surface: #ffffff;
+    --color-surface-soft: #eef2f0;
+
+    --color-text: #17201d;
+    --color-text-soft: #65706c;
+
+    --color-border: #dce3df;
+    --color-border-strong: #c6d0cb;
+
+    --color-primary: #18794e;
+    --color-primary-hover: #11643f;
+    --color-primary-soft: #e8f4ed;
+
+    --color-success: #18794e;
+    --color-success-soft: #e8f4ed;
+
+    --color-warning: #a45c0a;
+    --color-warning-soft: #fff4df;
+
+    --color-danger: #b42318;
+    --color-danger-soft: #fff0ee;
+
+    --color-focus: #2b8f65;
+
+    --color-dark: #14201b;
+
+    --shadow-small:
+        0 1px 2px rgba(20, 32, 27, 0.05);
+
+    --shadow-medium:
+        0 8px 30px rgba(20, 32, 27, 0.08);
+
+    --radius-small: 0.5rem;
+    --radius-medium: 0.8rem;
+    --radius-large: 1.15rem;
+
+    --content-width: 1180px;
+}
+
+
+/* ========================================
+    2. RESET / GLOBAL
+======================================== */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+
+    min-height: 100vh;
+
+    background-color: var(--color-background);
+    color: var(--color-text);
+
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    line-height: 1.5;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+a {
+    color: inherit;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+/* ========================================
+    3. ACCESSIBILITY
+======================================== */
+
+.visually-hidden {
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+
+    border: 0;
+}
+
+
+/* ========================================
+    4. TYPOGRAPHY
+======================================== */
+
+h1,
+h2,
+h3,
+p {
+    margin-top: 0;
+}
+
+h1,
+h2,
+h3 {
+    color: var(--color-text);
+
+    line-height: 1.2;
+}
+
+h1 {
+    margin-bottom: 0.8rem;
+
+    font-size: clamp(2rem, 9vw, 3.6rem);
+    letter-spacing: -0.04em;
+}
+
+h2 {
+    margin-bottom: 0.7rem;
+
+    font-size: clamp(1.5rem, 6vw, 2rem);
+    letter-spacing: -0.025em;
+}
+
+h3 {
+    margin-bottom: 0.35rem;
+}
+
+p {
+    color: var(--color-text-soft);
+}
+
+.eyebrow {
+    margin-bottom: 0.45rem;
+
+    color: var(--color-primary);
+
+    font-size: 0.76rem;
+    font-weight: 800;
+
+    letter-spacing: 0.12em;
+
+    text-transform: uppercase;
+}
+
+
+/* ========================================
+    5. HEADER
+======================================== */
+
+.site-header {
+    background-color: var(--color-surface);
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.header-container {
+    width: min(100% - 2rem, var(--content-width));
+
+    margin-inline: auto;
+
+    min-height: 4.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+}
+
+.brand {
+    display: inline-flex;
+    flex-direction: column;
+
+    text-decoration: none;
+
+    line-height: 1;
+}
+
+.brand-name {
+    color: var(--color-dark);
+
+    font-size: 1.2rem;
+    font-weight: 900;
+
+    letter-spacing: 0.08em;
+}
+
+.brand-subtitle {
+    margin-top: 0.3rem;
+
+    color: var(--color-text-soft);
+
+    font-size: 0.65rem;
+    font-weight: 600;
+
+    letter-spacing: 0.09em;
+
+    text-transform: uppercase;
+}
+
+
+/* ========================================
+    6. MAIN PAGE
+======================================== */
+
+.booking-page {
+    width: min(100% - 2rem, var(--content-width));
+
+    margin-inline: auto;
+
+    padding-block: 2.5rem 4rem;
+}
+
+.booking-introduction {
+    max-width: 42rem;
+
+    margin-bottom: 2rem;
+}
+
+.booking-introduction-text {
+    max-width: 34rem;
+
+    margin-bottom: 0;
+
+    font-size: 1rem;
+}
+
+
+/* ========================================
+    7. PROGRESS
+======================================== */
+
+.booking-progress {
+    margin-bottom: 1.5rem;
+
+    overflow-x: auto;
+
+    scrollbar-width: none;
+}
+
+.booking-progress::-webkit-scrollbar {
+    display: none;
+}
+
+.progress-list {
+    min-width: 34rem;
+
+    margin: 0;
+    padding: 0;
+
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+
+    list-style: none;
+}
+
+.progress-step {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 0.45rem;
+
+    color: var(--color-text-soft);
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+.progress-step::after {
+    content: "";
+
+    position: absolute;
+
+    top: 1rem;
+    left: calc(50% + 1.15rem);
+
+    width: calc(100% - 2.3rem);
+    height: 2px;
+
+    background-color: var(--color-border);
+
+    z-index: 0;
+}
+
+.progress-step:last-child::after {
+    display: none;
+}
+
+.progress-number {
+    width: 2rem;
+    height: 2rem;
+
+    display: grid;
+    place-items: center;
+
+    background-color: var(--color-surface);
+    border: 2px solid var(--color-border);
+
+    border-radius: 50%;
+
+    position: relative;
+    z-index: 1;
+}
+
+.progress-step.is-active {
+    color: var(--color-primary);
+}
+
+.progress-step.is-active .progress-number {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+
+    color: #ffffff;
+}
+
+.progress-step.is-complete .progress-number {
+    background-color: var(--color-primary-soft);
+    border-color: var(--color-primary);
+
+    color: var(--color-primary);
+}
+
+.progress-step.is-complete::after {
+    background-color: var(--color-primary);
+}
+
+
+/* ========================================
+    8. BOOKING LAYOUT
+======================================== */
+
+.booking-layout {
+    display: grid;
+
+    gap: 1.25rem;
+}
+
+.booking-flow {
+    min-width: 0;
+}
+
+
+/* ========================================
+    9. BOOKING STEP
+======================================== */
+
+.booking-step {
+    padding: 1.25rem;
+
+    background-color: var(--color-surface);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+
+    box-shadow: var(--shadow-small);
+}
+
+.booking-step[hidden] {
+    display: none;
+}
+
+.step-header {
+    margin-bottom: 1.5rem;
+}
+
+.step-header > p:last-child {
+    margin-bottom: 0;
+}
+
+.step-number-text {
+    margin-bottom: 0.4rem;
+
+    color: var(--color-primary);
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.08em;
+}
+
+
+/* ========================================
+    10. SELECTION CARDS
+======================================== */
+
+.selection-fieldset {
+    display: grid;
+
+    gap: 0.8rem;
+}
+
+.selection-card {
+    position: relative;
+
+    display: block;
+
+    background-color: var(--color-surface);
+
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-medium);
+
+    cursor: pointer;
+
+    transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease,
+        background-color 150ms ease,
+        transform 150ms ease;
+}
+
+.selection-card:hover {
+    border-color: var(--color-border-strong);
+
+    box-shadow: var(--shadow-small);
+}
+
+.selection-card:active {
+    transform: scale(0.995);
+}
+
+.selection-card input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.selection-card-content {
+    min-height: 100%;
+
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.8rem;
+}
+
+.selection-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 1rem;
+}
+
+.selection-card-title {
+    color: var(--color-text);
+
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.selection-card-description {
+    color: var(--color-text-soft);
+
+    font-size: 0.9rem;
+}
+
+.selection-indicator {
+    flex-shrink: 0;
+
+    width: 1.2rem;
+    height: 1.2rem;
+
+    border: 2px solid var(--color-border-strong);
+    border-radius: 50%;
+
+    transition:
+        border-color 150ms ease,
+        background-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.selection-card:has(input:checked) {
+    background-color: var(--color-primary-soft);
+
+    border-color: var(--color-primary);
+
+    box-shadow:
+        0 0 0 1px var(--color-primary);
+}
+
+.selection-card:has(input:checked) .selection-indicator {
+    background-color: var(--color-primary);
+
+    border-color: var(--color-primary);
+
+    box-shadow:
+        inset 0 0 0 3px var(--color-primary-soft);
+}
+
+.selection-card:has(input:focus-visible) {
+    outline: 3px solid rgba(43, 143, 101, 0.25);
+    outline-offset: 3px;
+}
+
+
+/* ========================================
+    11. SERVICES
+======================================== */
+
+.service-meta {
+    margin-top: auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 1rem;
+
+    color: var(--color-text-soft);
+
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.service-price {
+    color: var(--color-text);
+
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+
+/* ========================================
+    12. TRAINERS
+======================================== */
+
+.trainer-card-content {
+    padding: 1rem;
+
+    display: grid;
+    grid-template-columns: auto 1fr;
+
+    gap: 1rem;
+
+    align-items: center;
+}
+
+.trainer-placeholder {
+    width: 3.5rem;
+    height: 3.5rem;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #244c3a,
+            #6ba888
+        );
+
+    color: #ffffff;
+
+    border-radius: 50%;
+
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.trainer-placeholder-generic {
+    background:
+        linear-gradient(
+            145deg,
+            #38443f,
+            #7e8f87
+        );
+}
+
+.trainer-details {
+    min-width: 0;
+}
+
+.trainer-specialties {
+    display: block;
+
+    margin-top: 0.35rem;
+
+    color: var(--color-text-soft);
+
+    font-size: 0.82rem;
+    line-height: 1.5;
+}
+
+
+/* ========================================
+    13. FORM CONTROLS
+======================================== */
+
+.form-grid {
+    display: grid;
+
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.45rem;
+}
+
+.form-group label {
+    color: var(--color-text);
+
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+
+    min-height: 3rem;
+
+    padding: 0.75rem 0.85rem;
+
+    background-color: var(--color-surface);
+
+    color: var(--color-text);
+
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-small);
+
+    outline: none;
+
+    transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+    border-color: #aebbb4;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color: var(--color-focus);
+
+    box-shadow:
+        0 0 0 3px rgba(43, 143, 101, 0.14);
+}
+
+.form-group input[aria-invalid="true"] {
+    border-color: var(--color-danger);
+}
+
+.field-help {
+    margin: 0;
+
+    color: var(--color-text-soft);
+
+    font-size: 0.78rem;
+}
+
+.field-error {
+    margin: 0;
+
+    color: var(--color-danger);
+
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+
+/* ========================================
+    14. AVAILABILITY
+======================================== */
+
+.date-section {
+    max-width: 24rem;
+
+    margin-bottom: 2rem;
+}
+
+.section-heading-row {
+    margin-bottom: 1rem;
+}
+
+.section-heading-row h3 {
+    margin-bottom: 0.3rem;
+}
+
+.section-heading-row p {
+    margin-bottom: 0;
+
+    font-size: 0.9rem;
+}
+
+.appointment-slots {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 0.7rem;
+}
+
+.appointment-slot {
+    min-width: 0;
+
+    padding: 0.85rem;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 0.2rem;
+
+    background-color: var(--color-surface);
+
+    color: var(--color-text);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+
+    text-align: left;
+
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        box-shadow 150ms ease,
+        transform 150ms ease;
+}
+
+.appointment-slot:hover {
+    border-color: var(--color-primary);
+
+    background-color: var(--color-primary-soft);
+}
+
+.appointment-slot:focus-visible {
+    outline: 3px solid rgba(43, 143, 101, 0.25);
+    outline-offset: 2px;
+}
+
+.appointment-slot.is-selected {
+    background-color: var(--color-primary);
+
+    color: #ffffff;
+
+    border-color: var(--color-primary);
+}
+
+.slot-time {
+    font-weight: 800;
+}
+
+.slot-trainer {
+    color: var(--color-text-soft);
+
+    font-size: 0.78rem;
+}
+
+.appointment-slot.is-selected .slot-trainer {
+    color: rgba(255, 255, 255, 0.78);
+}
+
+
+/* ========================================
+    15. STATUS MESSAGES
+======================================== */
+
+.status-message {
+    margin-top: 1rem;
+
+    padding: 0.9rem 1rem;
+
+    border-radius: var(--radius-small);
+
+    font-size: 0.88rem;
+}
+
+.status-message strong {
+    color: inherit;
+}
+
+.status-message-neutral {
+    background-color: var(--color-surface-soft);
+
+    color: var(--color-text);
+}
+
+.status-message-loading {
+    background-color: var(--color-primary-soft);
+
+    color: var(--color-primary);
+}
+
+.status-message-error {
+    background-color: var(--color-danger-soft);
+
+    color: var(--color-danger);
+}
+
+
+/* ========================================
+    16. BUTTONS
+======================================== */
+
+.button {
+    min-height: 2.85rem;
+
+    padding: 0.7rem 1rem;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.5rem;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-small);
+
+    font-weight: 750;
+
+    transition:
+        background-color 150ms ease,
+        border-color 150ms ease,
+        color 150ms ease,
+        box-shadow 150ms ease,
+        transform 150ms ease;
+}
+
+.button:active:not(:disabled) {
+    transform: translateY(1px);
+}
+
+.button-primary {
+    background-color: var(--color-primary);
+
+    color: #ffffff;
+}
+
+.button-primary:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+}
+
+.button-primary:disabled {
+    background-color: #afbab4;
+
+    color: #ffffff;
+
+    opacity: 0.75;
+}
+
+.button-secondary {
+    background-color: var(--color-surface);
+
+    color: var(--color-text);
+
+    border-color: var(--color-border-strong);
+}
+
+.button-secondary:hover {
+    background-color: var(--color-surface-soft);
+}
+
+.button:focus-visible {
+    outline: 3px solid rgba(43, 143, 101, 0.25);
+    outline-offset: 2px;
+}
+
+.button-small {
+    min-height: 2.4rem;
+
+    padding: 0.55rem 0.75rem;
+
+    font-size: 0.78rem;
+}
+
+
+/* ========================================
+    17. STEP ACTIONS
+======================================== */
+
+.step-actions {
+    margin-top: 1.75rem;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 0.75rem;
+}
+
+.step-actions-end {
+    grid-template-columns: 1fr;
+}
+
+
+/* ========================================
+    18. REVIEW
+======================================== */
+
+.review-card {
+    overflow: hidden;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+}
+
+.review-primary {
+    padding: 1rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 1rem;
+
+    background-color: var(--color-surface-soft);
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.review-primary h3 {
+    margin-bottom: 0.2rem;
+}
+
+.review-primary p {
+    margin-bottom: 0;
+}
+
+.review-label {
+    margin-bottom: 0.3rem;
+
+    font-size: 0.72rem;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+
+    text-transform: uppercase;
+}
+
+.review-price {
+    color: var(--color-text);
+
+    font-size: 1.3rem;
+    font-weight: 850;
+}
+
+.review-details {
+    margin: 0;
+
+    padding: 0;
+}
+
+.review-detail {
+    padding: 0.9rem 1rem;
+
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+
+    gap: 1rem;
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.review-detail:last-child {
+    border-bottom: 0;
+}
+
+.review-detail dt {
+    color: var(--color-text-soft);
+
+    font-size: 0.82rem;
+}
+
+.review-detail dd {
+    margin: 0;
+
+    color: var(--color-text);
+
+    font-size: 0.85rem;
+    font-weight: 650;
+
+    text-align: right;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* ========================================
+    19. POLICY / PRICE CHANGE
+======================================== */
+
+.policy-card {
+    margin-top: 1rem;
+
+    padding: 1rem;
+
+    background-color: var(--color-surface-soft);
+
+    border-radius: var(--radius-medium);
+}
+
+.policy-card h3 {
+    font-size: 1rem;
+}
+
+.policy-card p {
+    margin-bottom: 0.65rem;
+
+    font-size: 0.85rem;
+}
+
+.policy-card p:last-child {
+    margin-bottom: 0;
+}
+
+.price-change-notice {
+    margin-top: 1rem;
+
+    padding: 1rem;
+
+    background-color: var(--color-warning-soft);
+
+    border: 1px solid #eccb92;
+    border-radius: var(--radius-medium);
+}
+
+.price-change-notice h3 {
+    color: var(--color-warning);
+
+    font-size: 1rem;
+}
+
+.price-change-notice p {
+    margin-bottom: 1rem;
+
+    font-size: 0.85rem;
+}
+
+.confirmation-checkbox {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 0.7rem;
+
+    color: var(--color-text);
+
+    font-size: 0.85rem;
+
+    cursor: pointer;
+}
+
+.confirmation-checkbox input {
+    width: 1.1rem;
+    height: 1.1rem;
+
+    margin-top: 0.15rem;
+
+    accent-color: var(--color-primary);
+}
+
+
+/* ========================================
+    20. BOOKING SUMMARY
+======================================== */
+
+.booking-summary {
+    padding: 1.15rem;
+
+    background-color: var(--color-dark);
+
+    color: #ffffff;
+
+    border-radius: var(--radius-large);
+
+    box-shadow: var(--shadow-medium);
+}
+
+.booking-summary .eyebrow {
+    color: #80caa3;
+}
+
+.booking-summary h2 {
+    margin-bottom: 0;
+
+    color: #ffffff;
+
+    font-size: 1.3rem;
+}
+
+.booking-summary-header {
+    padding-bottom: 1rem;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.summary-list {
+    margin: 0;
+    padding: 0;
+}
+
+.summary-item {
+    padding-block: 0.9rem;
+
+    display: flex;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.summary-item dt {
+    color: rgba(255, 255, 255, 0.62);
+
+    font-size: 0.8rem;
+}
+
+.summary-item dd {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 0.85rem;
+    font-weight: 700;
+
+    text-align: right;
+}
+
+.summary-total {
+    padding-top: 1rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-total span {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.summary-total strong {
+    font-size: 1.5rem;
+}
+
+.summary-note {
+    margin-top: 1rem;
+    margin-bottom: 0;
+
+    color: rgba(255, 255, 255, 0.58);
+
+    font-size: 0.75rem;
+}
+
+
+/* ========================================
+    21. CONFIRMATION
+======================================== */
+
+.confirmation-step {
+    text-align: center;
+}
+
+.confirmation-icon {
+    width: 4rem;
+    height: 4rem;
+
+    margin-inline: auto;
+    margin-bottom: 1rem;
+
+    display: grid;
+    place-items: center;
+
+    background-color: var(--color-success-soft);
+
+    color: var(--color-success);
+
+    border-radius: 50%;
+
+    font-size: 1.7rem;
+    font-weight: 900;
+}
+
+.confirmation-message {
+    max-width: 32rem;
+
+    margin-inline: auto;
+}
+
+.confirmation-reference {
+    margin-block: 1.5rem;
+
+    padding: 1rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.3rem;
+
+    background-color: var(--color-surface-soft);
+
+    border-radius: var(--radius-medium);
+}
+
+.confirmation-reference span {
+    color: var(--color-text-soft);
+
+    font-size: 0.78rem;
+}
+
+.confirmation-reference strong {
+    color: var(--color-text);
+
+    font-size: 1.25rem;
+
+    letter-spacing: 0.06em;
+}
+
+.confirmation-summary {
+    display: grid;
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+
+    overflow: hidden;
+
+    text-align: left;
+}
+
+.confirmation-summary > div {
+    padding: 0.9rem;
+
+    display: flex;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.confirmation-summary > div:last-child {
+    border-bottom: 0;
+}
+
+.confirmation-summary span {
+    color: var(--color-text-soft);
+
+    font-size: 0.82rem;
+}
+
+.confirmation-summary strong {
+    font-size: 0.85rem;
+}
+
+.confirmation-email {
+    margin-block: 1.25rem;
+
+    font-size: 0.85rem;
+}
+
+.confirmation-actions {
+    display: grid;
+
+    gap: 0.75rem;
+}
+
+
+/* ========================================
+    22. FOOTER
+======================================== */
+
+.site-footer {
+    width: min(100% - 2rem, var(--content-width));
+
+    margin-inline: auto;
+
+    padding-block: 1.5rem 2rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.25rem;
+
+    border-top: 1px solid var(--color-border);
+}
+
+.site-footer p {
+    margin: 0;
+
+    font-size: 0.75rem;
+}
+
+
+/* ========================================
+    23. TABLET
+======================================== */
+
+@media (min-width: 640px) {
+
+    .booking-page {
+        padding-top: 3.5rem;
+    }
+
+
+    .booking-step {
+        padding: 1.75rem;
+    }
+
+
+    .selection-fieldset {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+
+    .trainer-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .form-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+
+    .appointment-slots {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+
+    .step-actions-end {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+
+    .step-actions-end .button {
+        min-width: 12rem;
+    }
+
+
+    .confirmation-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+
+    .confirmation-summary > div:nth-child(odd) {
+        border-right: 1px solid var(--color-border);
+    }
+
+
+    .confirmation-summary > div:nth-last-child(-n + 2) {
+        border-bottom: 0;
+    }
+
+
+    .confirmation-actions {
+        display: flex;
+        justify-content: center;
+    }
+
+}
+
+
+/* ========================================
+    24. DESKTOP
+======================================== */
+
+@media (min-width: 900px) {
+
+    .header-container {
+        min-height: 5rem;
+    }
+
+
+    .booking-introduction {
+        margin-bottom: 2.5rem;
+    }
+
+
+    .booking-progress {
+        margin-bottom: 2rem;
+
+        overflow: visible;
+    }
+
+
+    .progress-list {
+        min-width: 0;
+    }
+
+
+    .booking-layout {
+        grid-template-columns:
+            minmax(0, 1.8fr)
+            minmax(17rem, 0.8fr);
+
+        align-items: start;
+
+        gap: 1.5rem;
+    }
+
+
+    .booking-summary {
+        position: sticky;
+        top: 1.5rem;
+    }
+
+
+    .trainer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+
+    .no-preference-card {
+        grid-column: 1 / -1;
+    }
+
+
+    .appointment-slots {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+
+    .step-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    .step-actions .button {
+        min-width: 8.5rem;
+    }
+
+
+    .site-footer {
+        flex-direction: row;
+        justify-content: space-between;
+
+        padding-bottom: 2.5rem;
+    }
+
+}
+
+
+/* ========================================
+    25. LARGE DESKTOP
+======================================== */
+
+@media (min-width: 1100px) {
+
+    .booking-step {
+        padding: 2rem;
+    }
+
+
+    .selection-card-content {
+        padding: 1.15rem;
+    }
+
+
+    .trainer-card-content {
+        padding: 1.15rem;
+    }
+
+
+    .booking-layout {
+        gap: 2rem;
+    }
+
+}

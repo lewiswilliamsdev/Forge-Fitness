@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Book personal training sessions at Forge Fitness Studio."
+    >
+
+    <title>Book a Session | Forge Fitness Studio</title>
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="header-container">
+
+            <a href="#" class="brand" aria-label="Forge Fitness Studio home">
+                <span class="brand-name">FORGE</span>
+                <span class="brand-subtitle">Fitness Studio</span>
+            </a>
+
+            <button
+                class="button button-secondary button-small"
+                id="manage-booking-button"
+                type="button"
+            >
+                Manage booking
+            </button>
+
+        </div>
+    </header>
+
+
+    <main class="booking-page">
+
+        <section class="booking-introduction">
+            <p class="eyebrow">Personal Training</p>
+
+            <h1>Book your next session</h1>
+
+            <p class="booking-introduction-text">
+                Choose your session, trainer and preferred time.
+                We'll guide you through the rest.
+            </p>
+        </section>
+
+
+        <nav
+            class="booking-progress"
+            aria-label="Booking progress"
+            id="progress-bar"
+        >
+            <ol class="progress-list">
+
+                <li class="progress-step is-active" data-step="1">
+                    <span class="progress-number">1</span>
+                    <span class="progress-label">Service</span>
+                </li>
+
+                <li class="progress-step" data-step="2">
+                    <span class="progress-number">2</span>
+                    <span class="progress-label">Trainer</span>
+                </li>
+
+                <li class="progress-step" data-step="3">
+                    <span class="progress-number">3</span>
+                    <span class="progress-label">Time</span>
+                </li>
+
+                <li class="progress-step" data-step="4">
+                    <span class="progress-number">4</span>
+                    <span class="progress-label">Details</span>
+                </li>
+
+                <li class="progress-step" data-step="5">
+                    <span class="progress-number">5</span>
+                    <span class="progress-label">Review</span>
+                </li>
+
+            </ol>
+        </nav>
+
+
+        <div class="booking-layout">
+
+            <div class="booking-flow" id="booking-flow">
+
+
+                <!-- STEP 1: SERVICE -->
+
+                <section
+                    class="booking-step is-active"
+                    id="service-step"
+                    data-booking-step="1"
+                    aria-labelledby="service-step-heading"
+                >
+
+                    <div class="step-header">
+                        <p class="step-number-text">Step 1 of 5</p>
+
+                        <h2 id="service-step-heading">
+                            Choose your session
+                        </h2>
+
+                        <p>
+                            Select the type of training you'd like to book.
+                        </p>
+                    </div>
+
+                    <form id="service-selection-form">
+
+                    <fieldset class="selection-fieldset">
+
+                        <legend class="visually-hidden">
+                            Choose a personal training service
+                        </legend>
+
+
+                        <label class="selection-card service-card">
+
+                            <input
+                                type="radio"
+                                name="service"
+                                value="strengthTraining"
+                                id="service-input-strengthTraining"
+                            >
+
+                            <span class="selection-card-content">
+
+                                <span class="selection-card-header">
+                                    <span class="selection-card-title">
+                                        Strength Training
+                                    </span>
+
+                                    <span class="selection-indicator"></span>
+                                </span>
+
+                                <span class="selection-card-description">
+                                    Build strength with structured resistance
+                                    training tailored to your ability.
+                                </span>
+
+                                <span class="service-meta">
+                                    <span>60 minutes</span>
+                                    <span class="service-price">£45</span>
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="selection-card service-card">
+
+                            <input
+                                type="radio"
+                                name="service"
+                                value="cardiovascularFitness"
+                                id="service-input-cardiovascularFitness"
+                            >
+
+                            <span class="selection-card-content">
+
+                                <span class="selection-card-header">
+                                    <span class="selection-card-title">
+                                        Cardiovascular Fitness
+                                    </span>
+
+                                    <span class="selection-indicator"></span>
+                                </span>
+
+                                <span class="selection-card-description">
+                                    Improve cardiovascular fitness, stamina
+                                    and overall conditioning.
+                                </span>
+
+                                <span class="service-meta">
+                                    <span>45 minutes</span>
+                                    <span class="service-price">£38</span>
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="selection-card service-card">
+
+                            <input
+                                type="radio"
+                                name="service"
+                                value="muscularEndurance"
+                            >
+
+                            <span class="selection-card-content">
+
+                                <span class="selection-card-header">
+                                    <span class="selection-card-title">
+                                        Muscular Endurance
+                                    </span>
+
+                                    <span class="selection-indicator"></span>
+                                </span>
+
+                                <span class="selection-card-description">
+                                    Develop your ability to perform repeated
+                                    movements with strength and control.
+                                </span>
+
+                                <span class="service-meta">
+                                    <span>60 minutes</span>
+                                    <span class="service-price">£45</span>
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="selection-card service-card">
+
+                            <input
+                                type="radio"
+                                name="service"
+                                value="weightLossCoaching"
+                            >
+
+                            <span class="selection-card-content">
+
+                                <span class="selection-card-header">
+                                    <span class="selection-card-title">
+                                        Weight Loss Coaching
+                                    </span>
+
+                                    <span class="selection-indicator"></span>
+                                </span>
+
+                                <span class="selection-card-description">
+                                    Practical coaching focused on sustainable
+                                    training habits and progress.
+                                </span>
+
+                                <span class="service-meta">
+                                    <span>45 minutes</span>
+                                    <span class="service-price">£40</span>
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="selection-card service-card">
+
+                            <input
+                                type="radio"
+                                name="service"
+                                value="mobilityFlexibility"
+                            >
+
+                            <span class="selection-card-content">
+
+                                <span class="selection-card-header">
+                                    <span class="selection-card-title">
+                                        Mobility & Flexibility
+                                    </span>
+
+                                    <span class="selection-indicator"></span>
+                                </span>
+
+                                <span class="selection-card-description">
+                                    Improve movement quality, flexibility
+                                    and mobility through guided training.
+                                </span>
+
+                                <span class="service-meta">
+                                    <span>30 minutes</span>
+                                    <span class="service-price">£30</span>
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label class="selection-card service-card">
+
+                            <input
+                                type="radio"
+                                name="service"
+                                value="generalFitness"
+                            >
+
+                            <span class="selection-card-content">
+
+                                <span class="selection-card-header">
+                                    <span class="selection-card-title">
+                                        General Fitness
+                                    </span>
+
+                                    <span class="selection-indicator"></span>
+                                </span>
+
+                                <span class="selection-card-description">
+                                    A balanced session combining strength,
+                                    movement and conditioning.
+                                </span>
+
+                                <span class="service-meta">
+                                    <span>60 minutes</span>
+                                    <span class="service-price">£42</span>
+                                </span>
+
+                            </span>
+
+                        </label>
+
+                    </fieldset>
+
+
+                    <div class="step-actions step-actions-end">
+                        <button
+                            class="button button-primary"
+                            type="submit"
+                            disabled
+                        >
+                            Continue to trainer
+                        </button>
+                    </div>
+
+                </form>
+
+                </section>
+
+
+
+                <!-- STEP 2: TRAINER -->
+
+                <section
+                    class="booking-step"
+                    id="trainer-step"
+                    data-booking-step="2"
+                    aria-labelledby="trainer-step-heading"
+                    hidden
+                >
+
+                    <div class="step-header">
+                        <p class="step-number-text">Step 2 of 5</p>
+
+                        <h2 id="trainer-step-heading">
+                            Choose your trainer
+                        </h2>
+
+                        <p>
+                            Select a trainer or let us show you the best
+                            available appointments.
+                        </p>
+                    </div>
+
+
+                    <form id="trainer-selection-form">
+
+                    <fieldset class="selection-fieldset trainer-grid">
+
+                        <legend class="visually-hidden">
+                            Choose a trainer
+                        </legend>
+
+
+                        <label class="selection-card trainer-card no-preference-card"
+                        data-trainer="noPreference">
+
+                            <input
+                                type="radio"
+                                name="trainer"
+                                value="noPreference"
+                                class="trainer-input"
+                            >
+
+                            <span class="trainer-card-content">
+
+                                <span class="trainer-placeholder trainer-placeholder-generic">
+                                    <span>NP</span>
+                                </span>
+
+                                <span class="trainer-details">
+
+                                    <span class="selection-card-header">
+                                        <span class="selection-card-title">
+                                            No Preference
+                                        </span>
+
+                                        <span class="selection-indicator"></span>
+                                    </span>
+
+                                    <span class="selection-card-description">
+                                        Show me the best available times
+                                        across all eligible trainers.
+                                    </span>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label
+                            class="selection-card trainer-card"
+                            data-trainer="alex"
+                        >
+
+                            <input
+                                type="radio"
+                                name="trainer"
+                                value="alex"
+                                class="trainer-input"
+                            >
+
+                            <span class="trainer-card-content">
+
+                                <span
+                                    class="trainer-placeholder"
+                                    aria-hidden="true"
+                                >
+                                    <span>A</span>
+                                </span>
+
+                                <span class="trainer-details">
+
+                                    <span class="selection-card-header">
+                                        <span class="selection-card-title">
+                                            Alex
+                                        </span>
+
+                                        <span class="selection-indicator"></span>
+                                    </span>
+
+                                    <span class="trainer-specialties">
+                                        Strength Training · General Fitness ·
+                                        Weight Loss Coaching
+                                    </span>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label
+                            class="selection-card trainer-card"
+                            data-trainer="maya"
+                        >
+
+                            <input
+                                type="radio"
+                                name="trainer"
+                                value="maya"
+                                class="trainer-input"
+                            >
+
+                            <span class="trainer-card-content">
+
+                                <span
+                                    class="trainer-placeholder"
+                                    aria-hidden="true"
+                                >
+                                    <span>M</span>
+                                </span>
+
+                                <span class="trainer-details">
+
+                                    <span class="selection-card-header">
+                                        <span class="selection-card-title">
+                                            Maya
+                                        </span>
+
+                                        <span class="selection-indicator"></span>
+                                    </span>
+
+                                    <span class="trainer-specialties">
+                                        Cardiovascular Fitness · Mobility &
+                                        Flexibility · General Fitness
+                                    </span>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+
+                        <label
+                            class="selection-card trainer-card"
+                            data-trainer="jordan"
+                        >
+
+                            <input
+                                type="radio"
+                                name="trainer"
+                                value="jordan"
+                                class="trainer-input"
+                            >
+
+                            <span class="trainer-card-content">
+
+                                <span
+                                    class="trainer-placeholder"
+                                    aria-hidden="true"
+                                >
+                                    <span>J</span>
+                                </span>
+
+                                <span class="trainer-details">
+
+                                    <span class="selection-card-header">
+                                        <span class="selection-card-title">
+                                            Jordan
+                                        </span>
+
+                                        <span class="selection-indicator"></span>
+                                    </span>
+
+                                    <span class="trainer-specialties">
+                                        Strength Training · Muscular Endurance
+                                        · General Fitness
+                                    </span>
+
+                                </span>
+
+                            </span>
+
+                        </label>
+
+                    </fieldset>
+
+
+                    <div class="step-actions">
+                        <button
+                            class="button button-secondary"
+                            type="button"
+                        >
+                            Back
+                        </button>
+
+                        <button
+                            class="button button-primary"
+                            type="submit"
+                            disabled
+                        >
+                            Continue
+                        </button>
+                    </div>
+
+                    </form>
+
+                </section>
+
+
+
+                <!-- STEP 3: DATE & TIME -->
+
+                <section
+                    class="booking-step"
+                    id="date-time-step"
+                    data-booking-step="3"
+                    aria-labelledby="date-time-heading"
+                    hidden
+                >
+
+                <form id="date-time-selection-form">
+
+                    <div class="step-header">
+                        <p class="step-number-text">Step 3 of 5</p>
+
+                        <h2 id="date-time-heading">
+                            Choose a date & time
+                        </h2>
+
+                        <p>
+                            Sessions can be booked between 2 hours and
+                            30 days in advance.
+                        </p>
+                    </div>
+
+                    <div class="date-section">
+
+                        <div class="form-group">
+                            <label for="booking-date-input">
+                                Choose a date
+                            </label>
+
+                            <input
+                                id="booking-date-input"
+                                name="bookingDate"
+                                type="date"
+                            >
+
+                            <p class="field-help">
+                                Available appointments will appear below.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+
+                    <section
+                        class="availability-section"
+                        aria-labelledby="available-times-heading"
+                    >
+
+                        <div class="section-heading-row">
+                            <div>
+                                <h3 id="available-times-heading">
+                                    Available times
+                                </h3>
+
+                                <p>
+                                    Select one appointment to continue.
+                                </p>
+                            </div>
+                        </div>
+
+
+                        <div
+                            class="appointment-slots"
+                            id="appointment-slots"
+                        >
+
+                            <!-- <button
+                                class="appointment-slot"
+                                type="button"
+                                data-trainer="alex"
+                                data-time="09:00"
+                            >
+                                <span class="slot-time">09:00</span>
+                                <span class="slot-trainer">Alex</span>
+                            </button>
+
+                            <button
+                                class="appointment-slot"
+                                type="button"
+                                data-trainer="maya"
+                                data-time="09:15"
+                            >
+                                <span class="slot-time">09:15</span>
+                                <span class="slot-trainer">Maya</span>
+                            </button>
+
+                            <button
+                                class="appointment-slot"
+                                type="button"
+                                data-trainer="jordan"
+                                data-time="10:30"
+                            >
+                                <span class="slot-time">10:30</span>
+                                <span class="slot-trainer">Jordan</span>
+                            </button>
+
+                            <button
+                                class="appointment-slot"
+                                type="button"
+                                data-trainer="alex"
+                                data-time="11:45"
+                            >
+                                <span class="slot-time">11:45</span>
+                                <span class="slot-trainer">Alex</span>
+                            </button>
+
+                            <button
+                                class="appointment-slot"
+                                type="button"
+                                data-trainer="maya"
+                                data-time="13:15"
+                            >
+                                <span class="slot-time">13:15</span>
+                                <span class="slot-trainer">Maya</span>
+                            </button>
+
+                            <button
+                                class="appointment-slot"
+                                type="button"
+                                data-trainer="jordan"
+                                data-time="15:00"
+                            >
+                                <span class="slot-time">15:00</span>
+                                <span class="slot-trainer">Jordan</span>
+                            </button> -->
+
+                        </div>
+
+
+                        <div
+                            class="status-message status-message-loading"
+                            id="availability-loading-message"
+                            role="status"
+                            hidden
+                        >
+                            Checking appointment availability…
+                        </div>
+
+
+                        <div
+                            class="status-message status-message-neutral"
+                            id="no-availability-message"
+                            role="status"
+                            hidden
+                        >
+                            <strong>No appointments available.</strong>
+                            Try another date or trainer.
+                        </div>
+
+
+                        <div
+                            class="status-message status-message-error"
+                            id="slot-unavailable-message"
+                            role="alert"
+                            hidden
+                        >
+                            <strong>That appointment is no longer available.</strong>
+                            We've refreshed the available times for you.
+                        </div>
+
+                    </section>
+
+
+                    <div class="step-actions">
+                        <button
+                            class="button button-secondary"
+                            type="button"
+                        >
+                            Back
+                        </button>
+
+                        <button
+                            class="button button-primary"
+                            type="submit"
+                            disabled
+                        >
+                            Continue
+                        </button>
+                    </div>
+
+                </form>
+
+                </section>
+
+
+
+                <!-- STEP 4: CUSTOMER DETAILS -->
+
+                <section
+                    class="booking-step"
+                    id="customer-details-step"
+                    data-booking-step="4"
+                    aria-labelledby="customer-details-heading"
+                    hidden
+                >
+
+                    <div class="step-header">
+                        <p class="step-number-text">Step 4 of 5</p>
+
+                        <h2 id="customer-details-heading">
+                            Your details
+                        </h2>
+
+                        <p>
+                            We'll use these details for your booking
+                            confirmation and appointment updates.
+                        </p>
+                    </div>
+
+
+                    <form
+                        class="customer-form"
+                        id="customer-details-form"
+                        novalidate
+                    >
+
+                        <div class="form-grid">
+
+                            <div class="form-group">
+                                <label for="first-name">
+                                    First name
+                                </label>
+
+                                <input
+                                    id="first-name"
+                                    name="firstName"
+                                    type="text"
+                                    autocomplete="given-name"
+                                    required
+                                >
+
+                                <p
+                                    class="field-error"
+                                    id="first-name-error"
+                                    hidden
+                                >
+                                    Enter your first name.
+                                </p>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="last-name">
+                                    Last name
+                                </label>
+
+                                <input
+                                    id="last-name"
+                                    name="lastName"
+                                    type="text"
+                                    autocomplete="family-name"
+                                    required
+                                >
+
+                                <p
+                                    class="field-error"
+                                    id="last-name-error"
+                                    hidden
+                                >
+                                    Enter your last name.
+                                </p>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="email">
+                                    Email address
+                                </label>
+
+                                <input
+                                    id="email"
+                                    name="email"
+                                    type="email"
+                                    autocomplete="email"
+                                    required
+                                >
+
+                                <p
+                                    class="field-error"
+                                    id="email-error"
+                                    hidden
+                                >
+                                    Enter a valid email address.
+                                </p>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="phone">
+                                    Phone number
+                                </label>
+
+                                <input
+                                    id="phone"
+                                    name="phone"
+                                    type="tel"
+                                    autocomplete="tel"
+                                    required
+                                >
+
+                                <p
+                                    class="field-error"
+                                    id="phone-error"
+                                    hidden
+                                >
+                                    Enter a valid phone number.
+                                </p>
+                            </div>
+
+                        </div>
+
+
+                        <div class="step-actions">
+                            <button
+                                class="button button-secondary"
+                                type="button"
+                            >
+                                Back
+                            </button>
+
+                            <button
+                                class="button button-primary"
+                                type="submit"
+                            >
+                                Review booking
+                            </button>
+                        </div>
+
+                    </form>
+
+                </section>
+
+
+
+                <!-- STEP 5: REVIEW -->
+
+                <section
+                    class="booking-step"
+                    id="review-step"
+                    data-booking-step="5"
+                    aria-labelledby="review-heading"
+                    hidden
+                >
+
+                    <div class="step-header">
+                        <p class="step-number-text">Step 5 of 5</p>
+
+                        <h2 id="review-heading">
+                            Review your booking
+                        </h2>
+
+                        <p>
+                            Check the details below before confirming
+                            your appointment.
+                        </p>
+                    </div>
+
+
+                    <div class="review-card" id="review-card">
+
+                        <!-- <div class="review-primary">
+                            <div>
+                                <p class="review-label">Session</p>
+                                <h3>Strength Training</h3>
+                                <p>60 minutes</p>
+                            </div>
+
+                            <p class="review-price">£45</p>
+                        </div>
+
+
+                        <dl class="review-details">
+
+                            <div class="review-detail">
+                                <dt>Trainer</dt>
+                                <dd>Alex</dd>
+                            </div>
+
+                            <div class="review-detail">
+                                <dt>Date</dt>
+                                <dd>Tuesday 15 September</dd>
+                            </div>
+
+                            <div class="review-detail">
+                                <dt>Time</dt>
+                                <dd>10:30</dd>
+                            </div>
+
+                            <div class="review-detail">
+                                <dt>Customer</dt>
+                                <dd>Jamie Taylor</dd>
+                            </div>
+
+                            <div class="review-detail">
+                                <dt>Email</dt>
+                                <dd>jamie@example.com</dd>
+                            </div>
+
+                            <div class="review-detail">
+                                <dt>Phone</dt>
+                                <dd>07123 456789</dd>
+                            </div>
+
+                        </dl> -->
+
+                    </div>
+
+
+                    <aside class="policy-card">
+                        <h3>Cancellation policy</h3>
+
+                        <p>
+                            Cancel at least 24 hours before your session
+                            and there is no fee. Cancellations made within
+                            24 hours are charged at 50% of the session price.
+                        </p>
+
+                        <p>
+                            Appointments can be rescheduled until 12 hours
+                            before the session.
+                        </p>
+                    </aside>
+
+
+                    <div
+                        class="price-change-notice"
+                        id="price-change-notice"
+                        hidden
+                    >
+                        <div>
+                            <h3>Your session price has changed</h3>
+
+                            <p>
+                                The rescheduled appointment has a new price.
+                                Review and accept it before continuing.
+                            </p>
+                        </div>
+
+                        <label class="confirmation-checkbox">
+                            <input
+                                type="checkbox"
+                                id="accept-price-change"
+                            >
+
+                            <span>
+                                I accept the new price of
+                                <strong>£45</strong>.
+                            </span>
+                        </label>
+                    </div>
+
+
+                    <div class="step-actions">
+                        <button
+                            class="button button-secondary"
+                            type="button"
+                        >
+                            Back
+                        </button>
+
+                        <button
+                            class="button button-primary"
+                            id="confirm-booking-button"
+                            type="button"
+                        >
+                            Confirm booking
+                        </button>
+                    </div>
+
+                </section>
+
+
+
+                <!-- CONFIRMATION -->
+
+                <section
+                    class="booking-step confirmation-step"
+                    id="confirmation-step"
+                    aria-labelledby="confirmation-heading"
+                    hidden
+                >
+
+                    <div class="confirmation-icon" aria-hidden="true">
+                        ✓
+                    </div>
+
+                    <p class="eyebrow">Booking confirmed</p>
+
+                    <h2 id="confirmation-heading">
+                        Your session is booked
+                    </h2>
+
+                    <p class="confirmation-message" id="confirmation-message">
+                        <!-- Your appointment with Alex is confirmed for
+                        Tuesday 15 September at 10:30. -->
+                    </p>
+
+
+                    <div class="confirmation-reference">
+                        <span>Booking reference</span>
+                        <strong id="booking-reference-value"></strong>
+                    </div>
+
+
+                    <div class="confirmation-summary">
+
+                        <div>
+                            <span>Session</span>
+                            <strong id="confirmation-summary-service"></strong>
+                        </div>
+
+                        <div>
+                            <span>Trainer</span>
+                            <strong id="confirmation-summary-trainer"></strong>
+                        </div>
+
+                        <div>
+                            <span>Date</span>
+                            <strong id="confirmation-sumary-datw"></strong>
+                        </div>
+
+                        <div>
+                            <span>Time</span>
+                            <strong id="confirmation-summary-time"></strong>
+                        </div>
+
+                    </div>
+
+
+                    <p class="confirmation-email">
+                        A simulated confirmation email has been sent
+                        to your email address.
+                    </p>
+
+
+                    <div class="confirmation-actions">
+
+                        <button
+                            class="button button-primary"
+                            type="button"
+                        >
+                            Manage booking
+                        </button>
+
+                        <button
+                            class="button button-secondary"
+                            type="button"
+                        >
+                            Book another session
+                        </button>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+
+
+            <!-- PERSISTENT BOOKING SUMMARY -->
+
+            <aside
+                class="booking-summary"
+                id="booking-summary"
+                aria-labelledby="booking-summary-heading"
+            >
+
+                <div class="booking-summary-header">
+                    <p class="eyebrow">Your selection</p>
+
+                    <h2 id="booking-summary-heading">
+                        Your booking
+                    </h2>
+                </div>
+
+
+                <dl class="summary-list">
+
+                    <div class="summary-item">
+                        <dt>Service</dt>
+                        <dd id="summary-service">Not selected</dd>
+                    </div>
+
+                    <div class="summary-item">
+                        <dt>Trainer</dt>
+                        <dd id="summary-trainer">Not selected</dd>
+                    </div>
+
+                    <div class="summary-item">
+                        <dt>Date</dt>
+                        <dd id="summary-date">Not selected</dd>
+                    </div>
+
+                    <div class="summary-item">
+                        <dt>Time</dt>
+                        <dd id="summary-time">Not selected</dd>
+                    </div>
+
+                </dl>
+
+
+                <div class="summary-total">
+                    <span>Total</span>
+                    <strong id="summary-total">—</strong>
+                </div>
+
+
+                <p class="summary-note">
+                    You won't be charged until your booking is confirmed.
+                </p>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+
+    <footer class="site-footer">
+        <p>
+            © Forge Fitness Studio
+        </p>
+
+        <p>
+            Personal training, built around you.
+        </p>
+    </footer>
+
+    <script type="module" src="main.js"></script>
+
+</body>
+</html>

@@ -1,10 +1,10 @@
 export const serviceValues = [
-    { value: "strengthTraining", text: "Strength Training", duration: 60 },
-    { value: "cardiovascularFitness", text: "Cardiovasuclar Fitness", duration: 45 },
-    { value: "muscularEndurance", text: "Muscular Endurance", duration: 60 },
-    { value: "weightLossCoaching", text: "Weight Loss Coaching", duration: 45 },
-    { value: "mobilityFlexibility", text: "Mobility & Flexibility", duration: 30 },
-    { value: "generalFitness", text: "General Fitness", duration: 60 }
+    { value: "strengthTraining", text: "Strength Training", duration: 60, durationText: "60 minutes", price: "£45" },
+    { value: "cardiovascularFitness", text: "Cardiovasuclar Fitness", duration: 45, durationText: "45 minutes", price: "£38" },
+    { value: "muscularEndurance", text: "Muscular Endurance", duration: 60, durationText: "60 minutes", price: "£45" },
+    { value: "weightLossCoaching", text: "Weight Loss Coaching", duration: 45, durationText: "45 minutes", price: "£40" },
+    { value: "mobilityFlexibility", text: "Mobility & Flexibility", duration: 30, durationText: "30 minutes", price: "£30" },
+    { value: "generalFitness", text: "General Fitness", duration: 60, durationText: "60 minutes", price: "£42" }
 ]
 
 export const trainers = [

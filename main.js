@@ -1,11 +1,17 @@
 const serviceSelectionForm = document.getElementById("service-selection-form")
 const trainerSelectionForm = document.getElementById("trainer-selection-form")
 const dateTimeSelectionForm = document.getElementById("date-time-selection-form")
+const customerDetailsForm = document.getElementById("customer-details-form")
 
 const serviceStepSection = document.getElementById("service-step")
 const trainerStepSection = document.getElementById("trainer-step")
 const dateTimeStepSection = document.getElementById("date-time-step")
 const customerDetailsStepSection = document.getElementById("customer-details-step")
+const reviewStepSection = document.getElementById("review-step")
+
+const bookingConfirmation = document.getElementById("confirmation-step")
+
+const reviewCard = document.getElementById("review-card")
 
 const progressBar = document.getElementById("progress-bar")
 
@@ -19,6 +25,7 @@ const summaryService = document.getElementById("summary-service")
 const summaryTrainer = document.getElementById("summary-trainer")
 const summaryDate = document.getElementById("summary-date")
 const summaryTime = document.getElementById("summary-time")
+const summaryTotal = document.getElementById("summary-total")
 
 const trainerCards = document.querySelectorAll(".trainer-card")
 
@@ -80,6 +87,8 @@ serviceSelectionForm.addEventListener("submit", function(event) {
             card.setAttribute("hidden", "");
         }
     })
+
+    trainerStepSection.scrollIntoView({behavior: "smooth"})
 })
 
 // data booking step 2 trainer //
@@ -134,7 +143,7 @@ trainerSelectionForm.addEventListener("submit", function(event) {
         return trainer.value === booking.trainer;
     }); 
 
-    summaryTrainer.textContent = matchingTrainer.text;
+    dateTimeStepSection.scrollIntoView({behavior: "smooth"})
 })
 
 // data booking step 3 date & time //
@@ -153,8 +162,6 @@ const dateTimeBackButton = dateTimeSelectionForm.querySelector(".button-secondar
     progressStep2.classList.remove("is-complete");
 
     progressStep3.classList.remove("is-active");
-
-    summaryTrainer.textContent = "Not Selected";
 
     bookingDateInput.value = "";
     appointmentSlots.innerHTML = "";
@@ -286,7 +293,6 @@ bookingDateInput.addEventListener("change", function(event){
     booking.date = selectedDateInput;
 
     summaryDate.textContent = booking.date;
-    })
 
     const noAvailabilityMessage = document.getElementById("no-availability-message");
 
@@ -295,19 +301,30 @@ bookingDateInput.addEventListener("change", function(event){
     } else {
     noAvailabilityMessage.setAttribute("hidden", "");
     }
+})
 
 appointmentSlots.addEventListener("click", function(event) {
     event.preventDefault();
 
-    const clickedSlot = event.target.closest("button")
+    const selectedSlot = appointmentSlots.querySelector(".appointment-slot.is-selected");
+
+    if (selectedSlot !== null) {
+        selectedSlot.classList.remove("is-selected")
+    }
+
+    const clickedSlot = event.target.closest("button");
+
+    if (clickedSlot === null) {
+        return;
+    }
+
+    clickedSlot.classList.add("is-selected");
 
     const dateTimeFormContinueButton = dateTimeSelectionForm.querySelector(".button-primary");
 
     booking.time = clickedSlot.dataset.time;
 
-    if (!clickedSlot !== null) {
-        dateTimeFormContinueButton.removeAttribute("disabled")
-    }
+    dateTimeFormContinueButton.removeAttribute("disabled")
 })
 
 dateTimeSelectionForm.addEventListener("submit", function(event) {
@@ -329,7 +346,7 @@ dateTimeSelectionForm.addEventListener("submit", function(event) {
         behavior: "smooth"
     });
 
-    console.log(booking)
+    customerDetailsStepSection.scrollIntoView({behavior: "smooth"});
 })
 
 // booking step 4 customer details // 
@@ -342,6 +359,10 @@ customerDetailsBackButton.addEventListener("click", function(event) {
     delete booking.time;
 
     dateTimeStepSection.removeAttribute("hidden");
+
+    const dateTimeFormContinueButton = dateTimeSelectionForm.querySelector(".button-primary");
+
+    dateTimeFormContinueButton.setAttribute("disabled", "");
 
     customerDetailsStepSection.setAttribute("hidden", "")
 
@@ -357,8 +378,143 @@ customerDetailsBackButton.addEventListener("click", function(event) {
     appointmentSlots.innerHTML = "";
 
     summaryDate.textContent = "Not selected"
-
-    console.log(booking)
 })
 
+customerDetailsForm.addEventListener("submit", function(event) {
+    event.preventDefault();
 
+    const firstNameInput = document.getElementById("first-name");
+    const lastNameInput = document.getElementById("last-name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+
+    const form = {
+        firstName: firstNameInput.value,
+        lastName: lastNameInput.value,
+        email:  emailInput.value,
+        phone: phoneInput.value
+    };
+
+    booking.form = form;
+
+    firstNameInput.value = "";
+    lastNameInput.value = "";
+    emailInput.value = "";
+    phoneInput.value = "";
+
+    customerDetailsStepSection.setAttribute("hidden", "");
+    reviewStepSection.removeAttribute("hidden");
+
+    progressStep4.classList.remove("is-active");
+    progressStep4.classList.add("is-complete");
+
+    progressStep5.classList.add("is-active")
+
+    renderSummary();
+})
+
+// booking step 5 review  //
+
+const reviewBackButton = reviewStepSection.querySelector(".button-secondary") 
+
+reviewBackButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    delete booking.form;
+
+    const firstNameInput = document.getElementById("first-name");
+    const lastNameInput = document.getElementById("last-name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+
+    firstNameInput.value = "";
+    lastNameInput.value = "";
+    emailInput.value = "";
+    phoneInput.value = "";
+
+    customerDetailsStepSection.removeAttribute("hidden");
+
+    reviewStepSection.setAttribute("hidden", "")
+
+    progressStep4.classList.add("is-active");
+    progressStep4.classList.remove("is-complete");
+
+    progressStep5.classList.remove("is-active");
+})
+
+function renderSummary() {
+    const reviewPrimary = document.createElement("div");
+    reviewPrimary.className = ("review-primary")
+
+    const primaryDiv1 = document.createElement("div");
+
+    const reviewLabel = document.createElement("p");
+    reviewLabel.textContent = ("Session");
+
+    const sessionType = document.createElement("h3");
+
+    const matchingService = serviceValues.find(function(service) {
+        return service.value === booking.service;
+    });
+
+    sessionType.textContent = matchingService.text;
+
+    const duration = document.createElement("p");
+    duration.textContent =  matchingService.durationText;
+
+    const reviewPrice = document.createElement("reviewPrice");
+    reviewPrice.className = ("review-price");
+    reviewPrice.textContent = matchingService.price
+
+    primaryDiv1.appendChild(reviewLabel);
+    primaryDiv1.appendChild(sessionType);
+    primaryDiv1.appendChild(duration);
+
+    reviewPrimary.appendChild(primaryDiv1);
+    reviewPrimary.appendChild(reviewPrice);
+
+    const reviewDetails = document.createElement("dl");
+
+    const labels = ["trainer", "date", "time", "customer", "email", "phone"];
+
+    const fullName = `${booking.form.firstName} ${booking.form.lastName}`
+
+    const values = {
+        trainer: matchingService.text,
+        date: booking.date,
+        time: booking.time,
+        customer: fullName,
+        email: booking.form.email,
+        phone: booking.form.phone
+    }
+
+    console.log(values);
+
+    labels.forEach(label => {
+        const reviewDetail = document.createElement("div");
+        reviewDetail.className = "review-detail";
+    
+        const dt = document.createElement("dt");
+        dt.textContent = label;
+
+        const dd = document.createElement("dd");
+
+        dd.textContent = values[label] || "";
+
+        reviewDetail.appendChild(dt);
+        reviewDetail.appendChild(dd);
+        
+        reviewDetails.appendChild(reviewDetail)
+    })
+
+    reviewCard.appendChild(reviewPrimary);
+    reviewCard.appendChild(reviewDetails);
+
+    summaryTotal.textContent = (matchingService.price)
+}
+
+
+
+// fix persistent summary trainer issue need to say if trainer is equal to undefined
+// return else summaryTrainer equal matchingtrainer text then also update inside of date and time when trainer is selected
+// if no preference was selected the first time around

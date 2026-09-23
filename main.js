@@ -9,6 +9,8 @@ const dateTimeStepSection = document.getElementById("date-time-step")
 const customerDetailsStepSection = document.getElementById("customer-details-step")
 const reviewStepSection = document.getElementById("review-step")
 
+const confirmBookingButton = document.getElementById("confirm-booking-button")
+
 const bookingConfirmation = document.getElementById("confirmation-step")
 
 const reviewCard = document.getElementById("review-card")
@@ -30,6 +32,8 @@ const summaryTotal = document.getElementById("summary-total")
 const trainerCards = document.querySelectorAll(".trainer-card")
 
 const appointmentSlots = document.getElementById("appointment-slots")
+
+let bookings = []
 
 let booking = {}
 
@@ -56,7 +60,7 @@ serviceSelectionForm.addEventListener("submit", function(event) {
 
     booking.service = (serviceValue);
 
-    serviceStepSection.setAttribute("hidden", "true");
+    serviceStepSection.setAttribute("hidden", "");
     trainerStepSection.removeAttribute("hidden");
 
     progressStep1.classList.remove("is-active");
@@ -109,6 +113,7 @@ const trainerBackButton = trainerSelectionForm.querySelector(".button-secondary"
     progressStep2.classList.remove("is-active");
 
     summaryService.textContent = "Not selected";
+    summaryTrainer.textContent = "Not selected";
 })
 
 trainerSelectionForm.addEventListener("change", function(event) {
@@ -143,6 +148,14 @@ trainerSelectionForm.addEventListener("submit", function(event) {
         return trainer.value === booking.trainer;
     }); 
 
+    if (matchingTrainer !== undefined) {
+        summaryTrainer.textContent = matchingTrainer.text;
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+
+    bookingDateInput.setAttribute('min', today)
+
     dateTimeStepSection.scrollIntoView({behavior: "smooth"})
 })
 
@@ -166,6 +179,7 @@ const dateTimeBackButton = dateTimeSelectionForm.querySelector(".button-secondar
     bookingDateInput.value = "";
     appointmentSlots.innerHTML = "";
 
+    summaryTrainer.textContent = "Not selected"
     summaryDate.textContent = "Not selected"
 
     progressBar.scrollTo({
@@ -241,7 +255,6 @@ function generateTrainerSlots(selectedTrainer, selectedDay) {
     formattdTimes.forEach(function(formattedTime) {
         renderTimeSlot(formattedTime, selectedTrainer);
     });
-
 }
 
 bookingDateInput.addEventListener("change", function(event){
@@ -323,6 +336,7 @@ appointmentSlots.addEventListener("click", function(event) {
     const dateTimeFormContinueButton = dateTimeSelectionForm.querySelector(".button-primary");
 
     booking.time = clickedSlot.dataset.time;
+    booking.trainer = clickedSlot.dataset.trainer
 
     dateTimeFormContinueButton.removeAttribute("disabled")
 })
@@ -341,10 +355,20 @@ dateTimeSelectionForm.addEventListener("submit", function(event) {
 
     summaryTime.textContent = booking.time;
 
+    const matchingTrainer = trainers.find(function(trainer) {
+        return trainer.value === booking.trainer;
+    }); 
+
+    summaryTrainer.textContent = matchingTrainer.text;
+
     progressBar.scrollTo({
         left: progressBar.scrollWidth,
         behavior: "smooth"
     });
+
+    const reviewBookingButton = customerDetailsForm.querySelector('button[type="submit"]');
+
+    reviewBookingButton.removeAttribute("disabled");
 
     customerDetailsStepSection.scrollIntoView({behavior: "smooth"});
 })
@@ -440,6 +464,10 @@ reviewBackButton.addEventListener("click", function(event) {
     progressStep4.classList.remove("is-complete");
 
     progressStep5.classList.remove("is-active");
+
+    summaryTotal.textContent = "—";
+
+    reviewCard.innerHTML = "";
 })
 
 function renderSummary() {
@@ -488,8 +516,6 @@ function renderSummary() {
         phone: booking.form.phone
     }
 
-    console.log(values);
-
     labels.forEach(label => {
         const reviewDetail = document.createElement("div");
         reviewDetail.className = "review-detail";
@@ -513,8 +539,147 @@ function renderSummary() {
     summaryTotal.textContent = (matchingService.price)
 }
 
+// booking confirmation //
+
+const confirmationMessage = document.getElementById("confirmation-message")
+
+const bookingReferenceValue = document.getElementById("booking-reference-value")
+
+const confirmationService = document.getElementById("confirmation-summary-service")
+const confirmationTrainer = document.getElementById("confirmation-summary-trainer")
+const confirmationDate = document.getElementById("confirmation-summary-date")
+const confirmationTime = document.getElementById("confirmation-summary-time")
 
 
-// fix persistent summary trainer issue need to say if trainer is equal to undefined
-// return else summaryTrainer equal matchingtrainer text then also update inside of date and time when trainer is selected
-// if no preference was selected the first time around
+function generateBookingReference() {
+    const generatedNumber = Math.random();
+
+    const selectedNumber = generatedNumber * 1000000;
+
+    const bookingNumber = Math.trunc(selectedNumber);
+
+    const bookingReference = "FF-" + bookingNumber;
+
+    bookingReferenceValue.textContent = bookingReference;
+
+    booking.id = bookingReference;
+}
+
+confirmBookingButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    reviewStepSection.setAttribute("hidden", "");
+    bookingConfirmation.removeAttribute("hidden");
+
+    progressStep5.classList.remove("is-active");
+    progressStep5.classList.add("is-complete");
+
+    const matchingTrainer = trainers.find(function(trainer) {
+        return trainer.value === booking.trainer;
+    }); 
+
+    const bookingDate = new Date(booking.date);
+
+    const bookingDayNumber = bookingDate.getDay();
+
+    const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
+
+    const selectedDay = days[bookingDayNumber];
+
+    const monthsOfTheYear = [
+        "January", "February", "March", "April", "May", "June", 
+        "July", "August", "September", "October", "November", "December"
+    ]
+
+    const monthName = monthsOfTheYear[bookingDate.getMonth()];
+
+    const bookingTime = booking.time;
+
+    confirmationMessage.textContent = "Your appointment with" + " " + matchingTrainer.text + " " +
+    "is confirmed for" + " " + selectedDay + " " + bookingDayNumber + " " + monthName + " " +
+    "at" + " " + bookingTime;
+
+    generateBookingReference();
+
+    const matchingService = serviceValues.find(function(service) {
+        return service.value === booking.service;
+    });
+
+    confirmationService.textContent = matchingService.text;
+    confirmationTrainer.textContent = matchingTrainer.text;
+    confirmationDate.textContent = booking.date;
+    confirmationTime.textContent = booking.time;
+
+    bookings.push(booking);
+
+    booking = {};
+
+    console.log(bookings);
+    console.log(booking);
+})
+
+function resetBookingFlow() {
+    serviceSelectionForm.reset();
+    trainerSelectionForm.reset();
+    dateTimeSelectionForm.reset();
+    customerDetailsForm.reset();
+
+    appointmentSlots.innerHTML = "";
+
+    confirmationMessage
+
+    const submitButtons = document.querySelectorAll('button[type="submit"]');
+
+    submitButtons.forEach(button => {
+        button.setAttribute("disabled", "")
+    });
+
+    summaryService.textContent = "Not selected";
+    summaryTrainer.textContent = "Not selected";
+    summaryDate.textContent = "Not selected";
+    summaryTime.textContent = "Not selected";
+    summaryTotal.textContent = "—";
+
+    bookingDateInput.value = "";
+
+    reviewCard.innerHTML = "";
+
+    confirmationService.textContent = "";
+    confirmationTrainer.textContent = "";
+    confirmationDate.textContent = "";
+    confirmationTime.textContent = "";
+
+
+    serviceStepSection.removeAttribute("hidden")
+    bookingConfirmation.setAttribute("hidden", "")
+
+    progressStep1.classList.remove("is-complete");
+    progressStep2.classList.remove("is-complete");
+    progressStep3.classList.remove("is-complete");
+    progressStep4.classList.remove("is-complete");
+    progressStep5.classList.remove("is-complete");
+
+    progressStep1.classList.add("is-active");
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+const newBookingButton = bookingConfirmation.querySelector(".button-secondary")
+
+newBookingButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    resetBookingFlow();
+})
+

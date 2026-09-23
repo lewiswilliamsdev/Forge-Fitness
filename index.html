@@ -1191,9 +1191,549 @@
 
         </div>
 
-    </main>
+        <section
+            class="manage-booking-section"
+            id="manage-booking-section"
+            aria-labelledby="manage-booking-heading"
+            hidden
+        >
+            <div class="manage-booking-container">
+        
+                <!-- ========================================
+                    MANAGE BOOKING HEADER
+                ========================================= -->
+        
+                <header class="manage-booking-header">
+                    <p class="section-eyebrow">Existing booking</p>
+        
+                    <h1 id="manage-booking-heading">
+                        Manage your booking
+                    </h1>
+        
+                    <p>
+                        Find your appointment using the booking reference and
+                        email address used when the booking was made.
+                    </p>
+                </header>
+        
+        
+                <!-- ========================================
+                    BOOKING LOOKUP
+                ========================================= -->
+        
+                <div
+                    class="manage-booking-view"
+                    id="booking-lookup-view"
+                >
+                    <div class="manage-card">
+        
+                        <div class="manage-card-heading">
+                            <h2>Find your booking</h2>
+        
+                            <p>
+                                Your booking reference can be found in your
+                                confirmation.
+                            </p>
+                        </div>
+        
+                        <form id="booking-lookup-form">
+        
+                            <div class="form-grid">
+        
+                                <div class="form-group">
+                                    <label for="booking-reference-input">
+                                        Booking reference
+                                    </label>
+        
+                                    <input
+                                        id="booking-reference-input"
+                                        name="bookingReference"
+                                        type="text"
+                                        autocomplete="off"
+                                        placeholder="e.g. FF-482731"
+                                        required
+                                    >
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="booking-email-input">
+                                        Email address
+                                    </label>
+        
+                                    <input
+                                        id="booking-email-input"
+                                        name="bookingEmail"
+                                        type="email"
+                                        autocomplete="email"
+                                        required
+                                    >
+                                </div>
+        
+                            </div>
+        
+                            <div
+                                class="status-message status-message-error"
+                                id="booking-not-found-message"
+                                role="alert"
+                                hidden
+                            >
+                                We couldn't find a booking matching those details.
+                                Check your booking reference and email address
+                                and try again.
+                            </div>
+        
+                            <div class="manage-form-actions">
+        
+                                <button
+                                    class="button button-primary"
+                                    type="submit"
+                                >
+                                    Find booking
+                                </button>
+        
+                                <button
+                                    class="button button-secondary book-new-session-button"
+                                    type="button"
+                                >
+                                    Book a new session
+                                </button>
+        
+                            </div>
+        
+                        </form>
+        
+                    </div>
+                </div>
+        
+        
+                <!-- ========================================
+                    BOOKING DETAILS
+                ========================================= -->
+        
+                <div
+                    class="manage-booking-view"
+                    id="booking-details-view"
+                    hidden
+                >
+                    <article class="manage-card booking-management-card">
+        
+                        <div class="booking-management-header">
+        
+                            <div>
+                                <p class="booking-reference-label">
+                                    Booking reference
+                                </p>
+        
+                                <p
+                                    class="booking-reference-value"
+                                    id="manage-booking-reference"
+                                >
+                                    —
+                                </p>
+                            </div>
+        
+                            <span
+                                class="booking-status"
+                                id="manage-booking-status"
+                            >
+                                Confirmed
+                            </span>
+        
+                        </div>
+        
+        
+                        <div class="booking-detail-section">
+        
+                            <h2>Appointment</h2>
+        
+                            <dl class="booking-detail-grid">
+        
+                                <div class="booking-detail">
+                                    <dt>Service</dt>
+                                    <dd id="manage-service">—</dd>
+                                </div>
+        
+                                <div class="booking-detail">
+                                    <dt>Trainer</dt>
+                                    <dd id="manage-trainer">—</dd>
+                                </div>
+        
+                                <div class="booking-detail">
+                                    <dt>Date</dt>
+                                    <dd id="manage-date">—</dd>
+                                </div>
+        
+                                <div class="booking-detail">
+                                    <dt>Time</dt>
+                                    <dd id="manage-time">—</dd>
+                                </div>
+        
+                                <div class="booking-detail">
+                                    <dt>Duration</dt>
+                                    <dd id="manage-duration">—</dd>
+                                </div>
+        
+                                <div class="booking-detail">
+                                    <dt>Price</dt>
+                                    <dd id="manage-price">—</dd>
+                                </div>
+        
+                            </dl>
+        
+                        </div>
+        
+        
+                        <div class="booking-detail-section">
+        
+                            <h2>Customer details</h2>
+        
+                            <dl class="booking-detail-grid">
+        
+                                <div class="booking-detail">
+                                    <dt>Name</dt>
+                                    <dd id="manage-customer-name">—</dd>
+                                </div>
+        
+                                <div class="booking-detail">
+                                    <dt>Email</dt>
+                                    <dd id="manage-customer-email">—</dd>
+                                </div>
+        
+                                <div class="booking-detail">
+                                    <dt>Phone</dt>
+                                    <dd id="manage-customer-phone">—</dd>
+                                </div>
+        
+                            </dl>
+        
+                        </div>
+        
+        
+                        <div class="booking-management-actions">
+        
+                            <button
+                                class="button button-primary"
+                                id="reschedule-booking-button"
+                                type="button"
+                            >
+                                Reschedule
+                            </button>
+        
+                            <button
+                                class="button button-secondary"
+                                id="update-booking-details-button"
+                                type="button"
+                            >
+                                Update details
+                            </button>
+        
+                            <button
+                                class="button button-danger"
+                                id="cancel-booking-button"
+                                type="button"
+                            >
+                                Cancel booking
+                            </button>
+        
+                        </div>
+        
+                    </article>
+        
+                    <div class="manage-secondary-actions">
+        
+                        <button
+                            class="button button-secondary"
+                            id="find-another-booking-button"
+                            type="button"
+                        >
+                            Find another booking
+                        </button>
+        
+                        <button
+                            class="button button-secondary book-new-session-button"
+                            type="button"
+                        >
+                            Book a new session
+                        </button>
+        
+                    </div>
+        
+                </div>
+        
+        
+                <!-- ========================================
+                    UPDATE CUSTOMER DETAILS
+                ========================================= -->
+        
+                <div
+                    class="manage-booking-view"
+                    id="update-details-view"
+                    hidden
+                >
+                    <div class="manage-card">
+        
+                        <div class="manage-card-heading">
+                            <h2>Update your details</h2>
+        
+                            <p>
+                                Changes here won't affect your appointment time,
+                                trainer or service.
+                            </p>
+                        </div>
+        
+                        <form id="update-booking-details-form">
+        
+                            <div class="form-grid">
+        
+                                <div class="form-group">
+                                    <label for="update-customer-name">
+                                        Name
+                                    </label>
+        
+                                    <input
+                                        id="update-customer-name"
+                                        name="customerName"
+                                        type="text"
+                                        autocomplete="name"
+                                        required
+                                    >
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="update-customer-email">
+                                        Email address
+                                    </label>
+        
+                                    <input
+                                        id="update-customer-email"
+                                        name="customerEmail"
+                                        type="email"
+                                        autocomplete="email"
+                                        required
+                                    >
+                                </div>
+        
+                                <div class="form-group">
+                                    <label for="update-customer-phone">
+                                        Phone number
+                                    </label>
+        
+                                    <input
+                                        id="update-customer-phone"
+                                        name="customerPhone"
+                                        type="tel"
+                                        autocomplete="tel"
+                                        required
+                                    >
+                                </div>
+        
+                            </div>
+        
+                            <div class="manage-form-actions">
+        
+                                <button
+                                    class="button button-primary"
+                                    type="submit"
+                                >
+                                    Save changes
+                                </button>
+        
+                                <button
+                                    class="button button-secondary"
+                                    id="cancel-details-update-button"
+                                    type="button"
+                                >
+                                    Back
+                                </button>
+        
+                            </div>
+        
+                        </form>
+        
+                    </div>
+                </div>
+        
+        
+                <!-- ========================================
+                    RESCHEDULE BOOKING
+                ========================================= -->
+        
+                <div
+                    class="manage-booking-view"
+                    id="reschedule-booking-view"
+                    hidden
+                >
+                    <div class="manage-card">
+        
+                        <div class="manage-card-heading">
+                            <h2>Reschedule appointment</h2>
+        
+                            <p>
+                                Choose a new date and time for your existing
+                                service and trainer.
+                            </p>
+                        </div>
+        
+        
+                        <div class="reschedule-current-booking">
+        
+                            <div>
+                                <span>Service</span>
+                                <strong id="reschedule-service">—</strong>
+                            </div>
+        
+                            <div>
+                                <span>Trainer</span>
+                                <strong id="reschedule-trainer">—</strong>
+                            </div>
+        
+                        </div>
+        
+        
+                        <form id="reschedule-booking-form">
+        
+                            <div class="form-group reschedule-date-section">
+        
+                                <label for="reschedule-date-input">
+                                    New date
+                                </label>
+        
+                                <input
+                                    id="reschedule-date-input"
+                                    name="rescheduleDate"
+                                    type="date"
+                                    required
+                                >
+        
+                            </div>
+        
+        
+                            <div class="section-heading-row">
+                                <h3>Available times</h3>
+        
+                                <p>
+                                    Select a new appointment time.
+                                </p>
+                            </div>
+        
+        
+                            <div
+                                class="appointment-slots"
+                                id="reschedule-appointment-slots"
+                            ></div>
+        
+        
+                            <div
+                                class="status-message status-message-loading"
+                                id="reschedule-loading-message"
+                                role="status"
+                                hidden
+                            >
+                                Checking availability…
+                            </div>
+        
+        
+                            <div
+                                class="status-message status-message-neutral"
+                                id="reschedule-no-availability-message"
+                                role="status"
+                                hidden
+                            >
+                                No appointments are available on this date.
+                                Try another day.
+                            </div>
+        
+        
+                            <div class="manage-form-actions">
+        
+                                <button
+                                    class="button button-primary"
+                                    id="confirm-reschedule-button"
+                                    type="submit"
+                                    disabled
+                                >
+                                    Continue
+                                </button>
+        
+                                <button
+                                    class="button button-secondary"
+                                    id="cancel-reschedule-button"
+                                    type="button"
+                                >
+                                    Back
+                                </button>
+        
+                            </div>
+        
+                        </form>
+        
+                    </div>
+                </div>
+        
+        
+                <!-- ========================================
+                    CANCEL BOOKING
+                ========================================= -->
+        
+                <div
+                    class="manage-booking-view"
+                    id="cancel-booking-view"
+                    hidden
+                >
+                    <div class="manage-card cancellation-card">
+        
+                        <div class="cancellation-icon" aria-hidden="true">
+                            !
+                        </div>
+        
+                        <div class="manage-card-heading">
+                            <h2>Cancel this booking?</h2>
+        
+                            <p>
+                                Please review the cancellation information
+                                before continuing.
+                            </p>
+                        </div>
+        
+        
+                        <div
+                            class="cancellation-policy-message"
+                            id="cancellation-policy-message"
+                        >
+                            Cancellation information will appear here.
+                        </div>
+        
+        
+                        <div class="cancellation-actions">
+        
+                            <button
+                                class="button button-danger"
+                                id="confirm-cancellation-button"
+                                type="button"
+                            >
+                                Confirm cancellation
+                            </button>
+        
+                            <button
+                                class="button button-secondary"
+                                id="keep-booking-button"
+                                type="button"
+                            >
+                                Keep booking
+                            </button>
+        
+                        </div>
+        
+                    </div>
+                </div>
+        
+            </div>
 
+        </section>
 
+            </main>
+        
+        
     <footer class="site-footer">
         <p>
             © Forge Fitness Studio

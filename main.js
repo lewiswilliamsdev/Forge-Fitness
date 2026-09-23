@@ -39,6 +39,16 @@ let booking = {}
 
 import {serviceValues, trainers} from './bookingData.js';
 
+const savedBookings = localStorage.getItem("bookings")
+
+if (savedBookings) {
+    bookings = JSON.parse(savedBookings)
+}
+
+function saveBookings() {
+    localStorage.setItem("bookings", JSON.stringify(bookings))
+}
+
 // data booking step 1 service //
 
 serviceSelectionForm.addEventListener("change", function(event) {
@@ -305,8 +315,6 @@ bookingDateInput.addEventListener("change", function(event){
 
     booking.date = selectedDateInput;
 
-    summaryDate.textContent = booking.date;
-
     const noAvailabilityMessage = document.getElementById("no-availability-message");
 
     if (appointmentSlots.children.length === 0) {
@@ -353,6 +361,7 @@ dateTimeSelectionForm.addEventListener("submit", function(event) {
 
     progressStep4.classList.add("is-active");
 
+    summaryDate.textContent = booking.date;
     summaryTime.textContent = booking.time;
 
     const matchingTrainer = trainers.find(function(trainer) {
@@ -620,10 +629,9 @@ confirmBookingButton.addEventListener("click", function(event) {
 
     bookings.push(booking);
 
-    booking = {};
+    saveBookings();
 
-    console.log(bookings);
-    console.log(booking);
+    booking = {};
 })
 
 function resetBookingFlow() {
@@ -633,8 +641,6 @@ function resetBookingFlow() {
     customerDetailsForm.reset();
 
     appointmentSlots.innerHTML = "";
-
-    confirmationMessage
 
     const submitButtons = document.querySelectorAll('button[type="submit"]');
 
@@ -682,4 +688,3 @@ newBookingButton.addEventListener("click", function(event) {
 
     resetBookingFlow();
 })
-

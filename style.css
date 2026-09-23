@@ -1529,3 +1529,449 @@ p {
     }
 
 }
+
+/* ========================================
+    MANAGE BOOKING
+======================================== */
+
+.manage-booking-section {
+    width: 100%;
+
+    padding: 2rem 1rem 4rem;
+}
+
+.manage-booking-container {
+    width: 100%;
+    max-width: 52rem;
+
+    margin: 0 auto;
+}
+
+
+/* ========================================
+    MANAGE BOOKING HEADER
+======================================== */
+
+.manage-booking-header {
+    margin-bottom: 1.5rem;
+}
+
+.section-eyebrow {
+    margin: 0 0 0.4rem;
+
+    color: var(--color-primary);
+
+    font-size: 0.78rem;
+    font-weight: 800;
+
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.manage-booking-header h1 {
+    margin: 0 0 0.6rem;
+
+    color: var(--color-text);
+
+    font-size: clamp(1.7rem, 6vw, 2.4rem);
+    line-height: 1.15;
+}
+
+.manage-booking-header > p:last-child {
+    max-width: 40rem;
+
+    margin: 0;
+
+    color: var(--color-text-soft);
+
+    line-height: 1.6;
+}
+
+
+/* ========================================
+    MANAGE CARDS
+======================================== */
+
+.manage-card {
+    padding: 1.25rem;
+
+    background-color: var(--color-surface);
+
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-large);
+
+    box-shadow: var(--shadow-small);
+}
+
+.manage-card-heading {
+    margin-bottom: 1.5rem;
+}
+
+.manage-card-heading h2 {
+    margin: 0 0 0.4rem;
+
+    color: var(--color-text);
+
+    font-size: 1.25rem;
+}
+
+.manage-card-heading p {
+    margin: 0;
+
+    color: var(--color-text-soft);
+
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+
+/* ========================================
+    MANAGE FORM ACTIONS
+======================================== */
+
+.manage-form-actions {
+    margin-top: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.75rem;
+}
+
+.manage-form-actions .button {
+    width: 100%;
+}
+
+
+/* ========================================
+    BOOKING MANAGEMENT HEADER
+======================================== */
+
+.booking-management-header {
+    padding-bottom: 1.25rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+
+    gap: 1rem;
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.booking-reference-label {
+    margin: 0 0 0.25rem;
+
+    color: var(--color-text-soft);
+
+    font-size: 0.75rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.booking-reference-value {
+    margin: 0;
+
+    color: var(--color-text);
+
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.booking-status {
+    padding: 0.4rem 0.65rem;
+
+    flex-shrink: 0;
+
+    background-color: var(--color-success-soft);
+
+    color: var(--color-success);
+
+    border-radius: 999px;
+
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+
+/* ========================================
+    BOOKING DETAILS
+======================================== */
+
+.booking-detail-section {
+    padding: 1.5rem 0;
+
+    border-bottom: 1px solid var(--color-border);
+}
+
+.booking-detail-section h2 {
+    margin: 0 0 1rem;
+
+    color: var(--color-text);
+
+    font-size: 1rem;
+}
+
+.booking-detail-grid {
+    margin: 0;
+
+    display: grid;
+
+    gap: 1rem;
+}
+
+.booking-detail {
+    min-width: 0;
+}
+
+.booking-detail dt {
+    margin-bottom: 0.25rem;
+
+    color: var(--color-text-soft);
+
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.booking-detail dd {
+    margin: 0;
+
+    overflow-wrap: anywhere;
+
+    color: var(--color-text);
+
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+
+/* ========================================
+    BOOKING MANAGEMENT ACTIONS
+======================================== */
+
+.booking-management-actions {
+    padding-top: 1.5rem;
+
+    display: grid;
+
+    gap: 0.75rem;
+}
+
+.booking-management-actions .button {
+    width: 100%;
+}
+
+.manage-secondary-actions {
+    margin-top: 1rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.75rem;
+}
+
+
+/* ========================================
+   DANGER BUTTON
+======================================== */
+
+.button-danger {
+    background-color: var(--color-danger);
+
+    color: #ffffff;
+}
+
+.button-danger:hover:not(:disabled) {
+    background-color: #951d14;
+}
+
+.button-danger:focus-visible {
+    outline: 3px solid rgba(180, 35, 24, 0.2);
+    outline-offset: 2px;
+}
+
+
+/* ========================================
+    RESCHEDULE
+======================================== */
+
+.reschedule-current-booking {
+    margin-bottom: 1.5rem;
+
+    padding: 1rem;
+
+    display: grid;
+
+    gap: 1rem;
+
+    background-color: var(--color-surface-soft);
+
+    border-radius: var(--radius-medium);
+}
+
+.reschedule-current-booking div {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.2rem;
+}
+
+.reschedule-current-booking span {
+    color: var(--color-text-soft);
+
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.reschedule-current-booking strong {
+    overflow-wrap: anywhere;
+
+    color: var(--color-text);
+
+    font-size: 0.95rem;
+}
+
+.reschedule-date-section {
+    max-width: 24rem;
+
+    margin-bottom: 2rem;
+}
+
+#reschedule-date-input {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+
+    box-sizing: border-box;
+}
+
+
+/* ========================================
+    CANCELLATION
+======================================== */
+
+.cancellation-card {
+    border-color: rgba(180, 35, 24, 0.2);
+}
+
+.cancellation-icon {
+    width: 2.75rem;
+    height: 2.75rem;
+
+    margin-bottom: 1rem;
+
+    display: grid;
+    place-items: center;
+
+    background-color: var(--color-danger-soft);
+
+    color: var(--color-danger);
+
+    border-radius: 50%;
+
+    font-size: 1.2rem;
+    font-weight: 900;
+}
+
+.cancellation-policy-message {
+    padding: 1rem;
+
+    background-color: var(--color-warning-soft);
+
+    color: var(--color-text);
+
+    border: 1px solid rgba(164, 92, 10, 0.18);
+    border-radius: var(--radius-small);
+
+    font-size: 0.88rem;
+    line-height: 1.55;
+}
+
+.cancellation-actions {
+    margin-top: 1.5rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.75rem;
+}
+
+.cancellation-actions .button {
+    width: 100%;
+}
+
+
+/* ========================================
+   TABLET
+======================================== */
+
+@media (min-width: 640px) {
+
+    .manage-booking-section {
+        padding: 3rem 1.5rem 5rem;
+    }
+
+    .manage-card {
+        padding: 1.75rem;
+    }
+
+    .manage-form-actions {
+        flex-direction: row;
+    }
+
+    .manage-form-actions .button {
+        width: auto;
+    }
+
+    .booking-detail-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .booking-management-actions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .manage-secondary-actions {
+        flex-direction: row;
+    }
+
+    .reschedule-current-booking {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .cancellation-actions {
+        flex-direction: row;
+    }
+
+    .cancellation-actions .button {
+        width: auto;
+    }
+}
+
+
+/* ========================================
+    DESKTOP
+======================================== */
+
+@media (min-width: 900px) {
+
+    .manage-booking-section {
+        padding-top: 4rem;
+    }
+
+    .manage-card {
+        padding: 2rem;
+    }
+
+    .booking-detail-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .booking-management-actions {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}

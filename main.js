@@ -1,3 +1,5 @@
+const bookingLayout = document.getElementById("booking-layout")
+
 const serviceSelectionForm = document.getElementById("service-selection-form")
 const trainerSelectionForm = document.getElementById("trainer-selection-form")
 const dateTimeSelectionForm = document.getElementById("date-time-selection-form")
@@ -8,10 +10,13 @@ const trainerStepSection = document.getElementById("trainer-step")
 const dateTimeStepSection = document.getElementById("date-time-step")
 const customerDetailsStepSection = document.getElementById("customer-details-step")
 const reviewStepSection = document.getElementById("review-step")
+const bookingConfirmation = document.getElementById("confirmation-step")
+const manageBookingSection = document.getElementById("manage-booking-section")
+
+const headerManageBookingButton = document.getElementById("manage-booking-button")
+
 
 const confirmBookingButton = document.getElementById("confirm-booking-button")
-
-const bookingConfirmation = document.getElementById("confirmation-step")
 
 const reviewCard = document.getElementById("review-card")
 
@@ -298,7 +303,6 @@ bookingDateInput.addEventListener("change", function(event){
         const eligibleTrainers = trainers.filter(function(trainer) {
             return trainer.services.includes(booking.service);
         });
-
         eligibleTrainers.forEach(function(trainer) {
             generateTrainerSlots(trainer, selectedDay)
         });
@@ -688,3 +692,160 @@ newBookingButton.addEventListener("click", function(event) {
 
     resetBookingFlow();
 })
+
+headerManageBookingButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    resetBookingFlow();
+
+    manageBookingSection.removeAttribute("hidden");
+    bookingLayout.setAttribute("hidden", "");
+
+    const findBookingButon = document.getElementById("find-booking-button")
+
+    findBookingButon.removeAttribute("disabled");
+})
+
+
+
+const bookingLookUpView = document.getElementById("booking-lookup-view")
+const bookingLookUpForm = document.getElementById("booking-lookup-form")
+
+const bookingNotFoundMessage = document.getElementById("booking-not-found-message")
+
+const bookingDetailsView = document.getElementById("booking-details-view")
+
+bookingLookUpForm.addEventListener("submit", function(event){
+    event.preventDefault();
+
+    const bookingReferenceInput = document.getElementById("booking-reference-input")
+    const bookingReference =  bookingReferenceInput.value
+
+    const bookingEmailInput = document.getElementById("booking-email-input")
+    const bookingEmail = bookingEmailInput.value
+
+
+    const matchingBooking = bookings.find(function(booking) {
+        if (booking.id === bookingReference && booking.form.email === bookingEmail) {
+            return booking
+        }
+    })
+
+    function renderMatchingBooking() {
+        const bookingReference = document.getElementById("manage-booking-reference");
+        bookingReference.textContent = matchingBooking.id;
+
+        // here put booking status once established
+
+        const service = document.getElementById("manage-service");
+
+        const matchingService = serviceValues.find(function(service) {
+        return service.value === matchingBooking.service;
+        });
+
+        service.textContent = matchingService.text;
+
+        const trainer = document.getElementById("manage-trainer");
+
+        const matchingTrainer = trainers.find(function(trainer) {
+        return trainer.value === matchingBooking.trainer;
+        }); 
+
+        trainer.textContent = matchingTrainer.text;
+
+        const date = document.getElementById("manage-date");
+        date.textContent = matchingBooking.date;
+
+        const time = document.getElementById("manage-time");
+        time.textContent = matchingBooking.time;
+
+        const duration = document.getElementById("manage-duration");
+        duration.textContent = matchingService.durationText;
+
+        const price = document.getElementById("manage-price");
+        price.textContent = matchingService.price;
+
+        console.log(matchingBooking);
+
+        const customerFullName = document.getElementById("manage-customer-name");
+        customerFullName.textContent = `${matchingBooking.form.firstName} ${matchingBooking.form.lastName}`
+
+        const customerEmail = document.getElementById("manage-customer-email");
+        customerEmail.textContent = matchingBooking.form.email;
+
+        const customerPhone = document.getElementById("manage-customer-phone");
+        customerPhone.textContent = matchingBooking.form.phone;
+    }
+
+    if (matchingBooking !== undefined) {
+        bookingDetailsView.removeAttribute("hidden");
+        bookingLookUpView.setAttribute("hidden", "");
+
+        renderMatchingBooking();
+    } else {
+        bookingNotFoundMessage.removeAttribute("hidden");
+    }
+
+    const rescheduleButton = document.getElementById("reschedule-booking-button");
+
+    const rescheduleBookingView = document.getElementById("reschedule-booking-view");
+
+    rescheduleButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        rescheduleBookingView.removeAttribute("hidden");
+        bookingDetailsView.setAttribute("hidden", "");
+
+        const service = document.getElementById("reschedule-service");
+
+        const matchingService = serviceValues.find(function(service) {
+        return service.value === matchingBooking.service;
+        });
+
+        service.textContent = matchingService.text;
+
+        const trainer = document.getElementById("reschedule-trainer");
+
+        const matchingTrainer = trainers.find(function(trainer) {
+        return trainer.value === matchingBooking.trainer;
+        }); 
+
+        trainer.textContent = matchingTrainer.text;
+
+        const rescheduleDateInput = document.getElementById("reschedule-date-input");
+
+        rescheduleDateInput.addEventListener("change", function(event) {
+            event.preventDefault();
+
+            booking = matchingBooking;
+
+            console.log(booking)
+
+            const selectedDateInput = rescheduleDateInput.value;
+
+            const bookingDate = new Date(selectedDateInput);
+
+            const bookingDayNumber = bookingDate.getDay();
+        
+            const days = [
+                "sunday",
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+                "saturday"
+            ];
+        
+            const selectedDay = days[bookingDayNumber];
+
+            generateTrainerSlots(matchingTrainer, selectedDay);
+                })
+            }) 
+
+            // figure out where inside bookingStep3 we are appending each slot to appointment slots
+            // thats the key detail we need to do the same for generating the slots in rescheduling
+})
+
+
+

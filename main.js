@@ -662,6 +662,12 @@ function resetBookingFlow() {
 
     bookingDateInput.value = "";
 
+    const bookingReferenceInput = document.getElementById("booking-reference-input")
+    const bookingEmailInput = document.getElementById("booking-email-input")
+
+    bookingReferenceInput.value = "";
+    bookingEmailInput.value = "";
+
     reviewCard.innerHTML = "";
 
     confirmationService.textContent = "";
@@ -696,6 +702,8 @@ newBookingButton.addEventListener("click", function(event) {
     resetBookingFlow();
 })
 
+
+
 // manage booking //
 
 headerManageBookingButton.addEventListener("click", function(event) {
@@ -704,12 +712,32 @@ headerManageBookingButton.addEventListener("click", function(event) {
     resetBookingFlow();
 
     manageBookingSection.removeAttribute("hidden");
+    bookingLookUpView.removeAttribute("hidden");
+
     bookingLayout.setAttribute("hidden", "");
 
     const findBookingButton = document.getElementById("find-booking-button")
 
     findBookingButton.removeAttribute("disabled");
 })
+
+// book a new session buttons // 
+
+const newSessionButtons = document.querySelectorAll(".book-new-session-button")
+
+newSessionButtons.forEach(button => {
+    button.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        resetBookingFlow();
+        bookingLayout.removeAttribute("hidden");
+        serviceStepSection.removeAttribute("hidden");
+
+        bookingLookUpView.setAttribute("hidden", "");
+        bookingDetailsView.setAttribute("hidden", "");
+        updateDetailsView.setAttribute("hidden", "");
+    });
+});
 
 // booking lookup process //
 
@@ -765,19 +793,6 @@ const bookingLookUpForm = document.getElementById("booking-lookup-form")
 const bookingNotFoundMessage = document.getElementById("booking-not-found-message")
 
 const bookingDetailsView = document.getElementById("booking-details-view")
-
-const newSessionButton = document.querySelectorAll(".book-new-session-button")
-// isnt working its not identifying newSessionButton //
-
-newSessionButton.addEventListener("click", function(event) {
-    event.preventDefault();
-
-    resetBookingFlow()
-    serviceStepSection.removeAttribute("hidden");
-
-    bookingDetailsView.setAttribute("hidden", "");
-    updateDetailsView.setAttribute("hidden", "");
-})
 
 bookingLookUpForm.addEventListener("submit", function(event){
     event.preventDefault();

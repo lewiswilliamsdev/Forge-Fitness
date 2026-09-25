@@ -205,7 +205,7 @@ const dateTimeBackButton = dateTimeSelectionForm.querySelector(".button-secondar
 
 const bookingDateInput = document.getElementById("booking-date-input");
 
-function renderTimeSlot(timeSlot, trainer) {
+function renderTimeSlot(timeSlot, trainer, container) {
             const timeSlotButton = document.createElement("button")
             timeSlotButton.className = ("appointment-slot")
             timeSlotButton.type = ("button")
@@ -223,10 +223,10 @@ function renderTimeSlot(timeSlot, trainer) {
         timeSlotButton.appendChild(slotTime);
         timeSlotButton.appendChild(slotTrainer);
 
-        appointmentSlots.appendChild(timeSlotButton);
+        container.appendChild(timeSlotButton);
     }
 
-function generateTrainerSlots(selectedTrainer, selectedDay) {
+function generateTrainerSlots(selectedTrainer, selectedDay, container) {
     const trainerSchedule = selectedTrainer.schedule[selectedDay]
 
     if (trainerSchedule === null) {
@@ -268,7 +268,7 @@ function generateTrainerSlots(selectedTrainer, selectedDay) {
     });
 
     formattdTimes.forEach(function(formattedTime) {
-        renderTimeSlot(formattedTime, selectedTrainer);
+        renderTimeSlot(formattedTime, selectedTrainer, container);
     });
 }
 
@@ -313,7 +313,7 @@ bookingDateInput.addEventListener("change", function(event){
             return trainer.value === booking.trainer;
         });
 
-        generateTrainerSlots(selectedTrainer, selectedDay)
+        generateTrainerSlots(selectedTrainer, selectedDay, appointmentSlots)
         loadingMessage.setAttribute("hidden", "");
     }
 
@@ -347,14 +347,13 @@ appointmentSlots.addEventListener("click", function(event) {
 
     const dateTimeFormContinueButton = dateTimeSelectionForm.querySelector(".button-primary");
 
-    booking.time = clickedSlot.dataset.time;
-    booking.trainer = clickedSlot.dataset.trainer
-
     dateTimeFormContinueButton.removeAttribute("disabled")
-})
 
-dateTimeSelectionForm.addEventListener("submit", function(event) {
+    dateTimeSelectionForm.addEventListener("submit", function(event) {
     event.preventDefault();
+
+    booking.time = clickedSlot.dataset.time;
+    booking.trainer = clickedSlot.dataset.trainer;
 
     dateTimeStepSection.setAttribute("hidden", "");
 
@@ -384,6 +383,7 @@ dateTimeSelectionForm.addEventListener("submit", function(event) {
     reviewBookingButton.removeAttribute("disabled");
 
     customerDetailsStepSection.scrollIntoView({behavior: "smooth"});
+})
 })
 
 // booking step 4 customer details // 
@@ -639,6 +639,8 @@ confirmBookingButton.addEventListener("click", function(event) {
 })
 
 function resetBookingFlow() {
+    booking = null;
+
     serviceSelectionForm.reset();
     trainerSelectionForm.reset();
     dateTimeSelectionForm.reset();
@@ -685,6 +687,7 @@ function resetBookingFlow() {
     });
 }
 
+
 const newBookingButton = bookingConfirmation.querySelector(".button-secondary")
 
 newBookingButton.addEventListener("click", function(event) {
@@ -692,6 +695,8 @@ newBookingButton.addEventListener("click", function(event) {
 
     resetBookingFlow();
 })
+
+// manage booking //
 
 headerManageBookingButton.addEventListener("click", function(event) {
     event.preventDefault();
@@ -701,10 +706,56 @@ headerManageBookingButton.addEventListener("click", function(event) {
     manageBookingSection.removeAttribute("hidden");
     bookingLayout.setAttribute("hidden", "");
 
-    const findBookingButon = document.getElementById("find-booking-button")
+    const findBookingButton = document.getElementById("find-booking-button")
 
-    findBookingButon.removeAttribute("disabled");
+    findBookingButton.removeAttribute("disabled");
 })
+
+// booking lookup process //
+
+function renderMatchingBooking() {
+    const bookingReference = document.getElementById("manage-booking-reference");
+    bookingReference.textContent = booking.id;
+
+    // here put booking status once established
+
+    const service = document.getElementById("manage-service");
+
+    const matchingService = serviceValues.find(function(service) {
+    return service.value === booking.service;
+    });
+
+    service.textContent = matchingService.text;
+
+    const trainer = document.getElementById("manage-trainer");
+
+    const matchingTrainer = trainers.find(function(trainer) {
+    return trainer.value === booking.trainer;
+    }); 
+
+    trainer.textContent = matchingTrainer.text;
+
+    const date = document.getElementById("manage-date");
+    date.textContent = booking.date;
+
+    const time = document.getElementById("manage-time");
+    time.textContent = booking.time;
+
+    const duration = document.getElementById("manage-duration");
+    duration.textContent = matchingService.durationText;
+
+    const price = document.getElementById("manage-price");
+    price.textContent = matchingService.price;
+
+    const customerFullName = document.getElementById("manage-customer-name");
+    customerFullName.textContent = `${booking.form.firstName} ${booking.form.lastName}`
+
+    const customerEmail = document.getElementById("manage-customer-email");
+    customerEmail.textContent = booking.form.email;
+
+    const customerPhone = document.getElementById("manage-customer-phone");
+    customerPhone.textContent = booking.form.phone;
+    }
 
 
 
@@ -714,6 +765,19 @@ const bookingLookUpForm = document.getElementById("booking-lookup-form")
 const bookingNotFoundMessage = document.getElementById("booking-not-found-message")
 
 const bookingDetailsView = document.getElementById("booking-details-view")
+
+const newSessionButton = document.querySelectorAll(".book-new-session-button")
+// isnt working its not identifying newSessionButton //
+
+newSessionButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    resetBookingFlow()
+    serviceStepSection.removeAttribute("hidden");
+
+    bookingDetailsView.setAttribute("hidden", "");
+    updateDetailsView.setAttribute("hidden", "");
+})
 
 bookingLookUpForm.addEventListener("submit", function(event){
     event.preventDefault();
@@ -731,53 +795,9 @@ bookingLookUpForm.addEventListener("submit", function(event){
         }
     })
 
-    function renderMatchingBooking() {
-        const bookingReference = document.getElementById("manage-booking-reference");
-        bookingReference.textContent = matchingBooking.id;
+    booking = matchingBooking;
 
-        // here put booking status once established
-
-        const service = document.getElementById("manage-service");
-
-        const matchingService = serviceValues.find(function(service) {
-        return service.value === matchingBooking.service;
-        });
-
-        service.textContent = matchingService.text;
-
-        const trainer = document.getElementById("manage-trainer");
-
-        const matchingTrainer = trainers.find(function(trainer) {
-        return trainer.value === matchingBooking.trainer;
-        }); 
-
-        trainer.textContent = matchingTrainer.text;
-
-        const date = document.getElementById("manage-date");
-        date.textContent = matchingBooking.date;
-
-        const time = document.getElementById("manage-time");
-        time.textContent = matchingBooking.time;
-
-        const duration = document.getElementById("manage-duration");
-        duration.textContent = matchingService.durationText;
-
-        const price = document.getElementById("manage-price");
-        price.textContent = matchingService.price;
-
-        console.log(matchingBooking);
-
-        const customerFullName = document.getElementById("manage-customer-name");
-        customerFullName.textContent = `${matchingBooking.form.firstName} ${matchingBooking.form.lastName}`
-
-        const customerEmail = document.getElementById("manage-customer-email");
-        customerEmail.textContent = matchingBooking.form.email;
-
-        const customerPhone = document.getElementById("manage-customer-phone");
-        customerPhone.textContent = matchingBooking.form.phone;
-    }
-
-    if (matchingBooking !== undefined) {
+if (booking !== undefined) {
         bookingDetailsView.removeAttribute("hidden");
         bookingLookUpView.setAttribute("hidden", "");
 
@@ -785,67 +805,195 @@ bookingLookUpForm.addEventListener("submit", function(event){
     } else {
         bookingNotFoundMessage.removeAttribute("hidden");
     }
+})
 
-    const rescheduleButton = document.getElementById("reschedule-booking-button");
+// update customer details process //
 
-    const rescheduleBookingView = document.getElementById("reschedule-booking-view");
+const updateDetailsButton = document.getElementById("update-booking-details-button")
+const updateDetailsView = document.getElementById("update-details-view")
+const updateDetailsForm = document.getElementById("update-booking-details-form") 
 
-    rescheduleButton.addEventListener("click", function(event) {
-        event.preventDefault();
+updateDetailsButton.addEventListener("click", function(event) {
+    event.preventDefault();
 
-        rescheduleBookingView.removeAttribute("hidden");
-        bookingDetailsView.setAttribute("hidden", "");
+    updateDetailsView.removeAttribute("hidden");
+    bookingDetailsView.setAttribute("hidden", "");
 
-        const service = document.getElementById("reschedule-service");
+    const saveChangesButton = updateDetailsForm.querySelector(".button-primary")
 
-        const matchingService = serviceValues.find(function(service) {
-        return service.value === matchingBooking.service;
-        });
+    saveChangesButton.removeAttribute("disabled")
+})
 
-        service.textContent = matchingService.text;
+const cancelDetailsUpdateButton = document.getElementById("cancel-details-update-button")
 
-        const trainer = document.getElementById("reschedule-trainer");
+cancelDetailsUpdateButton.addEventListener("click", function(event) {
+    event.preventDefault();
 
-        const matchingTrainer = trainers.find(function(trainer) {
-        return trainer.value === matchingBooking.trainer;
+    bookingDetailsView.removeAttribute("hidden");
+    updateDetailsView.setAttribute("hidden", "");
+})
+
+updateDetailsForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const customerNewNameInput = document.getElementById("update-customer-name");
+    const customerNewEmailInput = document.getElementById("update-customer-email");
+    const customerNewPhoneInput = document.getElementById("update-customer-phone");
+
+    const updatedCustomerName =  customerNewNameInput.value;
+    const updatedCustomerEmail = customerNewEmailInput.value;
+    const updatedCustomerPhone = customerNewPhoneInput.value;
+
+    const nameParts = updatedCustomerName.split(" ")
+
+    const updatedFirstName = nameParts[0];
+
+    const lastNames = nameParts.slice(1);
+
+    const updatedLastName = lastNames.join(" ");
+
+    booking.form.firstName = updatedFirstName;
+    booking.form.lastName = updatedLastName;
+    booking.form.email = updatedCustomerEmail;
+    booking.form.phone = updatedCustomerPhone;
+
+    saveBookings();
+    renderMatchingBooking();
+
+    bookingDetailsView.removeAttribute("hidden");
+    updateDetailsView.setAttribute("hidden", "");
+})
+
+
+
+
+
+// reschedule booking process // 
+
+const rescheduleButton = document.getElementById("reschedule-booking-button");
+const rescheduleBookingView = document.getElementById("reschedule-booking-view");
+const rescheduleBookingForm = document.getElementById("reschedule-booking-form");
+const rescheduleDateInput = document.getElementById("reschedule-date-input");
+const rescheduleAppointmenSlots = document.getElementById("reschedule-appointment-slots")
+
+rescheduleButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    rescheduleDateInput.value = "";
+
+    rescheduleAppointmenSlots.innerHTML = "";
+
+    rescheduleBookingView.removeAttribute("hidden");
+    bookingDetailsView.setAttribute("hidden", "");
+
+    const service = document.getElementById("reschedule-service");
+
+    const matchingService = serviceValues.find(function(service) {
+    return service.value === booking.service;
+    });
+
+    service.textContent = matchingService.text;
+
+    const trainer = document.getElementById("reschedule-trainer");
+
+    const matchingTrainer = trainers.find(function(trainer) {
+    return trainer.value === booking.trainer;
+    }); 
+
+    trainer.textContent = matchingTrainer.text;
+}) 
+
+const cancelRescheduleButton = document.getElementById("cancel-reschedule-button")
+
+cancelRescheduleButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    bookingDetailsView.removeAttribute("hidden");
+    rescheduleBookingView.setAttribute("hidden", "");
+})
+
+rescheduleDateInput.addEventListener("change", function(event) {
+    event.preventDefault();
+
+    rescheduleAppointmenSlots.innerHTML = "";
+
+    const selectedDateInput = rescheduleDateInput.value;
+
+    const bookingDate = new Date(selectedDateInput);
+
+    const bookingDayNumber = bookingDate.getDay();
+
+    const days = [
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday"
+    ];
+
+    const selectedDay = days[bookingDayNumber];
+
+    const selectedTrainer = trainers.find(function(trainer) {
+        return trainer.value === booking.trainer;
         }); 
 
-        trainer.textContent = matchingTrainer.text;
+        generateTrainerSlots(selectedTrainer, selectedDay, rescheduleAppointmenSlots);
 
-        const rescheduleDateInput = document.getElementById("reschedule-date-input");
+    const rescheduleNoAvailability = document.getElementById("reschedule-no-availability-message");
 
-        rescheduleDateInput.addEventListener("change", function(event) {
-            event.preventDefault();
-
-            booking = matchingBooking;
-
-            console.log(booking)
-
-            const selectedDateInput = rescheduleDateInput.value;
-
-            const bookingDate = new Date(selectedDateInput);
-
-            const bookingDayNumber = bookingDate.getDay();
-        
-            const days = [
-                "sunday",
-                "monday",
-                "tuesday",
-                "wednesday",
-                "thursday",
-                "friday",
-                "saturday"
-            ];
-        
-            const selectedDay = days[bookingDayNumber];
-
-            generateTrainerSlots(matchingTrainer, selectedDay);
-                })
-            }) 
-
-            // figure out where inside bookingStep3 we are appending each slot to appointment slots
-            // thats the key detail we need to do the same for generating the slots in rescheduling
+    if (rescheduleAppointmenSlots.children.length === 0) {
+    rescheduleNoAvailability.removeAttribute("hidden");
+    } else {
+    rescheduleNoAvailability.setAttribute("hidden", "");
+    }
 })
+
+const confirmRescheduleButton = document.getElementById("confirm-reschedule-button")
+
+rescheduleAppointmenSlots.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    const selectedSlot = rescheduleAppointmenSlots.querySelector(".appointment-slot.is-selected");
+
+    if (selectedSlot !== null) {
+        selectedSlot.classList.remove("is-selected")
+    }
+
+    const clickedSlot = event.target.closest("button");
+
+    if (clickedSlot === null) {
+        return;
+    }
+
+    clickedSlot.classList.add("is-selected");
+
+    console.log(clickedSlot);
+
+    console.log(booking);
+
+    confirmRescheduleButton.removeAttribute("disabled")
+
+    rescheduleBookingForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    booking.date = rescheduleDateInput.value;
+    booking.time = clickedSlot.dataset.time;
+
+    saveBookings();
+    renderMatchingBooking();
+
+    bookingDetailsView.removeAttribute("hidden");
+    rescheduleBookingView.setAttribute("hidden", "");
+
+    booking = null;
+    })
+})
+
+// cancel booking process //
+
+
 
 
 

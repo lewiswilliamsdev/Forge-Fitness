@@ -875,6 +875,8 @@ updateDetailsForm.addEventListener("submit", function(event) {
     saveBookings();
     renderMatchingBooking();
 
+    booking = null;
+
     bookingDetailsView.removeAttribute("hidden");
     updateDetailsView.setAttribute("hidden", "");
 })
@@ -1007,6 +1009,45 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
 })
 
 // cancel booking process //
+
+const cancelBookingButton = document.getElementById("cancel-booking-button")
+const cancelBookingView = document.getElementById("cancel-booking-view")
+
+const freeCancellationMessage = document.getElementById("free-cancellation-message")
+const lateCancellationMessage = document.getElementById("late-cancellation-message")
+
+cancelBookingButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    cancelBookingView.removeAttribute("hidden");
+    bookingDetailsView.setAttribute("hidden", "");
+
+    const appointmentDate = booking.date;
+    const appointmentTime = booking.time;
+
+    const appointmentDateTimeCombined = `${appointmentDate} ${appointmentTime}`;
+
+    const appointmentObject = new Date(appointmentDateTimeCombined);
+
+    const currentDateTime = new Date();
+
+    const differenceInMs = appointmentObject - currentDateTime;
+
+    const differenceInHours = (differenceInMs / 1000 / 60 / 60);
+
+    console.log(differenceInHours);
+})
+
+const keepBookingButton = document.getElementById("keep-booking-button")
+
+keepBookingButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    bookingDetailsView.removeAttribute("hidden");
+    cancelBookingView.setAttribute("hidden", "");
+})
+
+// confirm cancel booking //
 
 
 

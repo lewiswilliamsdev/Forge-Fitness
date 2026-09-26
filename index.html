@@ -1697,11 +1697,59 @@
                         </div>
         
         
-                        <div
-                            class="cancellation-policy-message"
-                            id="cancellation-policy-message"
-                        >
-                            Cancellation information will appear here.
+                        <div class="cancellation-policy">
+
+                            <!-- Free cancellation: appointment is 24+ hours away -->
+                            <div
+                                class="cancellation-policy-message cancellation-policy-free"
+                                id="free-cancellation-message"
+                                role="status"
+                                hidden
+                            >
+                                <div class="cancellation-policy-heading">
+                                    <span class="cancellation-policy-icon" aria-hidden="true">
+                                        ✓
+                                    </span>
+                        
+                                    <strong>Free cancellation</strong>
+                                </div>
+                        
+                                <p>
+                                    Your appointment is more than 24 hours away.
+                                    You can cancel this booking with no cancellation fee.
+                                </p>
+                            </div>
+                        
+                        
+                            <!-- Late cancellation: appointment is less than 24 hours away -->
+                            <div
+                                class="cancellation-policy-message cancellation-policy-fee"
+                                id="late-cancellation-message"
+                                role="status"
+                                hidden
+                            >
+                                <div class="cancellation-policy-heading">
+                                    <span class="cancellation-policy-icon" aria-hidden="true">
+                                        !
+                                    </span>
+                        
+                                    <strong>Late cancellation fee applies</strong>
+                                </div>
+                        
+                                <p>
+                                    Your appointment is less than 24 hours away.
+                                    A 50% cancellation fee applies.
+                                </p>
+                        
+                                <div class="cancellation-fee-summary">
+                                    <span>Cancellation fee</span>
+                        
+                                    <strong id="cancellation-fee-amount">
+                                        —
+                                    </strong>
+                                </div>
+                            </div>
+
                         </div>
         
         

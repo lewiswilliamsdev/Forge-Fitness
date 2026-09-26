@@ -1851,12 +1851,15 @@ p {
 
 
 /* ========================================
-    CANCELLATION
+   CANCELLATION
 ======================================== */
 
 .cancellation-card {
     border-color: rgba(180, 35, 24, 0.2);
 }
+
+
+/* Main cancellation icon */
 
 .cancellation-icon {
     width: 2.75rem;
@@ -1877,19 +1880,119 @@ p {
     font-weight: 900;
 }
 
+
+/* ========================================
+    CANCELLATION POLICY MESSAGES
+======================================== */
+
 .cancellation-policy-message {
     padding: 1rem;
 
-    background-color: var(--color-warning-soft);
-
-    color: var(--color-text);
-
-    border: 1px solid rgba(164, 92, 10, 0.18);
+    border: 1px solid;
     border-radius: var(--radius-small);
 
     font-size: 0.88rem;
     line-height: 1.55;
 }
+
+.cancellation-policy-heading {
+    margin-bottom: 0.6rem;
+
+    display: flex;
+    align-items: center;
+
+    gap: 0.55rem;
+}
+
+.cancellation-policy-heading strong {
+    font-size: 0.9rem;
+}
+
+.cancellation-policy-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+
+    display: grid;
+    place-items: center;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+.cancellation-policy-message p {
+    margin: 0;
+}
+
+
+/* Free cancellation */
+
+.cancellation-policy-free {
+    background-color: var(--color-success-soft);
+
+    color: var(--color-success);
+
+    border-color: rgba(24, 121, 78, 0.2);
+}
+
+.cancellation-policy-free .cancellation-policy-icon {
+    background-color: var(--color-success);
+
+    color: #ffffff;
+}
+
+
+/* Late cancellation */
+
+.cancellation-policy-fee {
+    background-color: var(--color-warning-soft);
+
+    color: var(--color-warning);
+
+    border-color: rgba(164, 92, 10, 0.2);
+}
+
+.cancellation-policy-fee .cancellation-policy-icon {
+    background-color: var(--color-warning);
+
+    color: #ffffff;
+}
+
+
+/* ========================================
+    CANCELLATION FEE
+======================================== */
+
+.cancellation-fee-summary {
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 1rem;
+
+    border-top: 1px solid rgba(164, 92, 10, 0.2);
+}
+
+.cancellation-fee-summary span {
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.cancellation-fee-summary strong {
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+
+/* ========================================
+    CANCELLATION ACTIONS
+======================================== */
 
 .cancellation-actions {
     margin-top: 1.5rem;
@@ -1906,7 +2009,23 @@ p {
 
 
 /* ========================================
-   TABLET
+    CANCELLATION - TABLET+
+======================================== */
+
+@media (min-width: 640px) {
+
+    .cancellation-actions {
+        flex-direction: row;
+    }
+
+    .cancellation-actions .button {
+        width: auto;
+    }
+}
+
+
+/* ========================================
+    TABLET
 ======================================== */
 
 @media (min-width: 640px) {

@@ -1,10 +1,10 @@
 export const serviceValues = [
-    { value: "strengthTraining", text: "Strength Training", duration: 60, durationText: "60 minutes", price: "£45" },
-    { value: "cardiovascularFitness", text: "Cardiovasuclar Fitness", duration: 45, durationText: "45 minutes", price: "£38" },
-    { value: "muscularEndurance", text: "Muscular Endurance", duration: 60, durationText: "60 minutes", price: "£45" },
-    { value: "weightLossCoaching", text: "Weight Loss Coaching", duration: 45, durationText: "45 minutes", price: "£40" },
-    { value: "mobilityFlexibility", text: "Mobility & Flexibility", duration: 30, durationText: "30 minutes", price: "£30" },
-    { value: "generalFitness", text: "General Fitness", duration: 60, durationText: "60 minutes", price: "£42" }
+    { value: "strengthTraining", text: "Strength Training", duration: 60, durationText: "60 minutes",price: 45, priceText: "£45" },
+    { value: "cardiovascularFitness", text: "Cardiovasuclar Fitness", duration: 45, durationText: "45 minutes",price: 38, priceText: "£38" },
+    { value: "muscularEndurance", text: "Muscular Endurance", duration: 60, durationText: "60 minutes",price: 45, priceText: "£45" },
+    { value: "weightLossCoaching", text: "Weight Loss Coaching", duration: 45, durationText: "45 minutes",price: 40, priceText: "£40" },
+    { value: "mobilityFlexibility", text: "Mobility & Flexibility", duration: 30, durationText: "30 minutes",price: 30, priceText: "£30" },
+    { value: "generalFitness", text: "General Fitness", duration: 60, durationText: "60 minutes",price: 42, priceText: "£42" }
 ]
 
 export const trainers = [
@@ -71,4 +71,8 @@ export const trainers = [
         }
     }
 ];
+
+export const cancellationPolicy = {
+    noticePeriodValue: 24, noticePeriodText: "24 hours", cancellationFee: 0.5, cancellationFeeText: "50%"
+}
 

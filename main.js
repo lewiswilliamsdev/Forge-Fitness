@@ -42,7 +42,7 @@ let bookings = []
 
 let booking = {}
 
-import {serviceValues, trainers} from './bookingData.js';
+import {serviceValues, trainers, cancellationPolicy} from './bookingData.js';
 
 const savedBookings = localStorage.getItem("bookings")
 
@@ -73,7 +73,7 @@ serviceSelectionForm.addEventListener("submit", function(event) {
     const serviceData = new FormData(serviceSelectionForm);
     const serviceValue = serviceData.get("service")
 
-    booking.service = (serviceValue);
+    booking.service = serviceValue;
 
     serviceStepSection.setAttribute("hidden", "");
     trainerStepSection.removeAttribute("hidden");
@@ -304,7 +304,7 @@ bookingDateInput.addEventListener("change", function(event){
             return trainer.services.includes(booking.service);
         });
         eligibleTrainers.forEach(function(trainer) {
-            generateTrainerSlots(trainer, selectedDay)
+            generateTrainerSlots(trainer, selectedDay, appointmentSlots)
         });
 
         loadingMessage.setAttribute("hidden", "");
@@ -549,7 +549,8 @@ function renderSummary() {
     reviewCard.appendChild(reviewPrimary);
     reviewCard.appendChild(reviewDetails);
 
-    summaryTotal.textContent = (matchingService.price)
+    booking.price = matchingService.price;
+    summaryTotal.textContent = matchingService.priceText;
 }
 
 // booking confirmation //
@@ -687,10 +688,17 @@ function resetBookingFlow() {
 
     progressStep1.classList.add("is-active");
 
+    manageBookingSection.setAttribute("hidden", "");
+
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
+
+    progressBar.scrollTo({
+            left: 0,
+            behavior: "smooth"
+        });
 }
 
 
@@ -793,7 +801,6 @@ const bookingLookUpForm = document.getElementById("booking-lookup-form")
 const bookingNotFoundMessage = document.getElementById("booking-not-found-message")
 
 const bookingDetailsView = document.getElementById("booking-details-view")
-
 bookingLookUpForm.addEventListener("submit", function(event){
     event.preventDefault();
 
@@ -1035,7 +1042,29 @@ cancelBookingButton.addEventListener("click", function(event) {
 
     const differenceInHours = (differenceInMs / 1000 / 60 / 60);
 
-    console.log(differenceInHours);
+    if (differenceInHours >= cancellationPolicy.noticePeriodValue) {
+        freeCancellationMessage.removeAttribute("hidden");
+    
+        const noticePeriod = document.getElementById("notice-period-text");
+        noticePeriod.textContent = cancellationPolicy.noticePeriodText;
+    } else {
+        lateCancellationMessage.removeAttribute("hidden");
+
+        const cancellationFee = document.getElementById("cancellation-fee-text");
+        cancellationFee.textContent = cancellationPolicy.cancellationFeeText;
+
+        const cancellationFeeAmount = document.getElementById("cancellation-fee-amount");
+
+        const bookingPrice = booking.price
+
+        console.log(bookingPrice)
+
+        const totalFee = Number(bookingPrice * cancellationPolicy.cancellationFee).toFixed(2);
+
+        cancellationFeeAmount.textContent = "£"+totalFee;
+
+        booking.cancellationFee = totalFee;
+    }
 })
 
 const keepBookingButton = document.getElementById("keep-booking-button")
@@ -1049,6 +1078,24 @@ keepBookingButton.addEventListener("click", function(event) {
 
 // confirm cancel booking //
 
+const confirmCancellationButton = document.getElementById("confirm-cancellation-button")
+
+confirmCancellationButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    let bookingToBeDeleted = booking;
+
+    bookings = bookings.filter(b => b.id !== bookingToBeDeleted.id);
+
+    saveBookings();
+
+    booking = null;
+
+    bookingLookUpView.removeAttribute("hidden");
+    cancelBookingView.setAttribute("hidden", "");
+
+    bookingLookUpForm.reset();
+})
 
 
 

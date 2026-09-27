@@ -1693,6 +1693,23 @@ p {
 
     font-size: 0.75rem;
     font-weight: 800;
+
+    text-transform: capitalize;
+}
+
+.booking-status.cancelled {
+    background-color: var(--color-danger-soft);
+    color: var(--color-danger);
+}
+
+.booking-status.rescheduled {
+    background-color: var(--color-warning-soft);
+    color: var(--color-warning);
+}
+
+.booking-status.completed {
+    background-color: var(--color-surface-soft);
+    color: var(--color-text-soft);
 }
 
 
@@ -1774,7 +1791,7 @@ p {
 
 
 /* ========================================
-   DANGER BUTTON
+    DANGER BUTTON
 ======================================== */
 
 .button-danger {
@@ -1851,7 +1868,7 @@ p {
 
 
 /* ========================================
-   CANCELLATION
+    CANCELLATION
 ======================================== */
 
 .cancellation-card {

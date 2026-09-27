@@ -38,6 +38,8 @@ const trainerCards = document.querySelectorAll(".trainer-card")
 
 const appointmentSlots = document.getElementById("appointment-slots")
 
+const bookingStatus = document.getElementById("manage-booking-status");
+
 let bookings = []
 
 let booking = {}
@@ -632,11 +634,13 @@ confirmBookingButton.addEventListener("click", function(event) {
     confirmationDate.textContent = booking.date;
     confirmationTime.textContent = booking.time;
 
+    booking.status = "confirmed"
+
     bookings.push(booking);
 
     saveBookings();
 
-    booking = {};
+    booking = null;
 })
 
 function resetBookingFlow() {
@@ -747,13 +751,16 @@ newSessionButtons.forEach(button => {
     });
 });
 
+
+
 // booking lookup process //
 
 function renderMatchingBooking() {
+
     const bookingReference = document.getElementById("manage-booking-reference");
     bookingReference.textContent = booking.id;
 
-    // here put booking status once established
+    bookingStatus.textContent = booking.status;
 
     const service = document.getElementById("manage-service");
 
@@ -793,8 +800,6 @@ function renderMatchingBooking() {
     customerPhone.textContent = booking.form.phone;
     }
 
-
-
 const bookingLookUpView = document.getElementById("booking-lookup-view")
 const bookingLookUpForm = document.getElementById("booking-lookup-form")
 
@@ -827,6 +832,26 @@ if (booking !== undefined) {
     } else {
         bookingNotFoundMessage.removeAttribute("hidden");
     }
+})
+
+// manage current current booking //
+
+const manageCurrentBookingButton = bookingConfirmation.querySelector(".button-primary")
+
+manageCurrentBookingButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    bookingLayout.setAttribute("hidden" ,"");
+    bookingLookUpView.setAttribute("hidden", "");
+
+    manageBookingSection.removeAttribute("hidden", "");
+    bookingDetailsView.removeAttribute("hidden")
+
+    booking = bookings.at(-1);
+
+    console.log(booking);
+
+    renderMatchingBooking();
 })
 
 // update customer details process //
@@ -887,10 +912,6 @@ updateDetailsForm.addEventListener("submit", function(event) {
     bookingDetailsView.removeAttribute("hidden");
     updateDetailsView.setAttribute("hidden", "");
 })
-
-
-
-
 
 // reschedule booking process // 
 
@@ -1005,6 +1026,10 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
     booking.date = rescheduleDateInput.value;
     booking.time = clickedSlot.dataset.time;
 
+    booking.status = "rescheduled"
+
+    bookingStatus.classList.add("rescheduled");
+
     saveBookings();
     renderMatchingBooking();
 
@@ -1083,9 +1108,9 @@ const confirmCancellationButton = document.getElementById("confirm-cancellation-
 confirmCancellationButton.addEventListener("click", function(event) {
     event.preventDefault();
 
-    let bookingToBeDeleted = booking;
+    booking.status = "cancelled";
 
-    bookings = bookings.filter(b => b.id !== bookingToBeDeleted.id);
+    bookingStatus.classList.add("cancelled");
 
     saveBookings();
 
@@ -1097,6 +1122,6 @@ confirmCancellationButton.addEventListener("click", function(event) {
     bookingLookUpForm.reset();
 })
 
-
-
+// bug with cancelling booking when going from manage current booking
+// bug doest happen when booking is found through lookup 
 

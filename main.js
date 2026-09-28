@@ -274,6 +274,8 @@ function generateTrainerSlots(selectedTrainer, selectedDay, container) {
     });
 }
 
+let selectedDate = null
+
 bookingDateInput.addEventListener("change", function(event){
     event.preventDefault();
 
@@ -319,7 +321,7 @@ bookingDateInput.addEventListener("change", function(event){
         loadingMessage.setAttribute("hidden", "");
     }
 
-    booking.date = selectedDateInput;
+    selectedDate = selectedDateInput;
 
     const noAvailabilityMessage = document.getElementById("no-availability-message");
 
@@ -330,7 +332,6 @@ bookingDateInput.addEventListener("change", function(event){
     }
 })
 
-let selectedDate = null
 let selectedTime = null
 
 appointmentSlots.addEventListener("click", function(event) {
@@ -348,8 +349,7 @@ appointmentSlots.addEventListener("click", function(event) {
         return;
     }
 
-    selectedDate = clickedSlot.dataset.time;
-    selectedTime = clickedSlot.dataset.trainer;
+    selectedTime = clickedSlot.dataset.time;
 
     clickedSlot.classList.add("is-selected");
 
@@ -381,7 +381,7 @@ dateTimeSelectionForm.addEventListener("submit", function(event) {
 
     const matchingTrainer = trainers.find(function(trainer) {
         return trainer.value === booking.trainer;
-    }); 
+    });
 
     summaryTrainer.textContent = matchingTrainer.text;
 
@@ -532,7 +532,7 @@ function renderSummary() {
     const fullName = `${booking.form.firstName} ${booking.form.lastName}`
 
     const matchingTrainer = trainers.find(function(trainer) {
-        trainer.value === booking.trainer;
+        return trainer.value === booking.trainer;
     })
 
     const values = {
@@ -647,6 +647,8 @@ confirmBookingButton.addEventListener("click", function(event) {
     confirmationService.textContent = matchingService.text;
     confirmationTrainer.textContent = matchingTrainer.text;
     confirmationDate.textContent = booking.date;
+
+    console.log(booking.time);
     confirmationTime.textContent = booking.time;
 
     booking.status = "confirmed"
@@ -777,6 +779,8 @@ function renderMatchingBooking() {
 
     bookingStatus.textContent = booking.status;
 
+    bookingStatus.classList.add(booking.status);
+
     const service = document.getElementById("manage-service");
 
     const matchingService = serviceValues.find(function(service) {
@@ -878,6 +882,10 @@ const updateDetailsForm = document.getElementById("update-booking-details-form")
 updateDetailsButton.addEventListener("click", function(event) {
     event.preventDefault();
 
+    if (booking.status === "cancelled") {
+        return;
+    }
+
     updateDetailsView.removeAttribute("hidden");
     bookingDetailsView.setAttribute("hidden", "");
 
@@ -938,6 +946,10 @@ const rescheduleAppointmenSlots = document.getElementById("reschedule-appointmen
 
 rescheduleButton.addEventListener("click", function(event) {
     event.preventDefault();
+
+    if (booking.status === "cancelled") {
+        return;
+    }
 
     rescheduleDateInput.value = "";
 
@@ -1072,6 +1084,10 @@ const lateCancellationMessage = document.getElementById("late-cancellation-messa
 cancelBookingButton.addEventListener("click", function(event) {
     event.preventDefault();
 
+    if (booking.status === "cancelled") {
+        return;
+    }
+
     cancelBookingView.removeAttribute("hidden");
     bookingDetailsView.setAttribute("hidden", "");
 
@@ -1131,8 +1147,6 @@ confirmCancellationButton.addEventListener("click", function(event) {
 
     booking.status = "cancelled";
 
-    bookingStatus.classList.add("cancelled");
-
     saveBookings();
 
     booking = null;
@@ -1142,7 +1156,3 @@ confirmCancellationButton.addEventListener("click", function(event) {
 
     bookingLookUpForm.reset();
 })
-
-// bug with cancelling booking when going from manage current booking
-// bug doest happen when booking is found through lookup 
-

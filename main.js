@@ -1156,3 +1156,13 @@ confirmCancellationButton.addEventListener("click", function(event) {
 
     bookingLookUpForm.reset();
 })
+
+// next step double booking prevention //
+// next steps for this: we need to prevent bookings being made with the same reference
+// we need to remove the appointment slot for said trainer at booking.time for that date 
+// allow slots to open back up if rescheduled and remove slots that have been taken via reschedulling
+// once an appointment slot is cancelled allow the slot to become available again
+
+// 12 hour and 30 day rule need implenting //
+
+// more form validation //

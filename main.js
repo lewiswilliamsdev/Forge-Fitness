@@ -330,6 +330,9 @@ bookingDateInput.addEventListener("change", function(event){
     }
 })
 
+let selectedDate = null
+let selectedTime = null
+
 appointmentSlots.addEventListener("click", function(event) {
     event.preventDefault();
 
@@ -345,17 +348,24 @@ appointmentSlots.addEventListener("click", function(event) {
         return;
     }
 
+    selectedDate = clickedSlot.dataset.time;
+    selectedTime = clickedSlot.dataset.trainer;
+
     clickedSlot.classList.add("is-selected");
 
     const dateTimeFormContinueButton = dateTimeSelectionForm.querySelector(".button-primary");
 
     dateTimeFormContinueButton.removeAttribute("disabled")
+})
 
-    dateTimeSelectionForm.addEventListener("submit", function(event) {
+dateTimeSelectionForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    booking.time = clickedSlot.dataset.time;
-    booking.trainer = clickedSlot.dataset.trainer;
+    booking.date = selectedDate;
+    booking.time = selectedTime;
+
+    selectedDate = null;
+    selectedTime = null;
 
     dateTimeStepSection.setAttribute("hidden", "");
 
@@ -385,7 +395,6 @@ appointmentSlots.addEventListener("click", function(event) {
     reviewBookingButton.removeAttribute("disabled");
 
     customerDetailsStepSection.scrollIntoView({behavior: "smooth"});
-})
 })
 
 // booking step 4 customer details // 
@@ -522,8 +531,12 @@ function renderSummary() {
 
     const fullName = `${booking.form.firstName} ${booking.form.lastName}`
 
+    const matchingTrainer = trainers.find(function(trainer) {
+        trainer.value === booking.trainer;
+    })
+
     const values = {
-        trainer: matchingService.text,
+        trainer: matchingTrainer.text,
         date: booking.date,
         time: booking.time,
         customer: fullName,
@@ -596,7 +609,7 @@ confirmBookingButton.addEventListener("click", function(event) {
 
     const bookingDate = new Date(booking.date);
 
-    const bookingDayNumber = bookingDate.getDay();
+    const bookingWeekDayNumber = bookingDate.getDay();
 
     const days = [
         "Sunday",
@@ -608,7 +621,9 @@ confirmBookingButton.addEventListener("click", function(event) {
         "Saturday"
     ];
 
-    const selectedDay = days[bookingDayNumber];
+    const selectedDay = days[bookingWeekDayNumber];
+
+    const dayOfMonth = bookingDate.getDate();
 
     const monthsOfTheYear = [
         "January", "February", "March", "April", "May", "June", 
@@ -620,7 +635,7 @@ confirmBookingButton.addEventListener("click", function(event) {
     const bookingTime = booking.time;
 
     confirmationMessage.textContent = "Your appointment with" + " " + matchingTrainer.text + " " +
-    "is confirmed for" + " " + selectedDay + " " + bookingDayNumber + " " + monthName + " " +
+    "is confirmed for" + " " + selectedDay + " " + dayOfMonth + " " + monthName + " " +
     "at" + " " + bookingTime;
 
     generateBookingReference();
@@ -997,6 +1012,9 @@ rescheduleDateInput.addEventListener("change", function(event) {
 
 const confirmRescheduleButton = document.getElementById("confirm-reschedule-button")
 
+let selectedRescheduleDate = null;
+let selectedRescheduleTime = null;
+
 rescheduleAppointmenSlots.addEventListener("click", function(event) {
     event.preventDefault();
 
@@ -1014,19 +1032,20 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
 
     clickedSlot.classList.add("is-selected");
 
-    console.log(clickedSlot);
-
-    console.log(booking);
+    selectedRescheduleDate = rescheduleDateInput.value;
+    selectedRescheduleTime = clickedSlot.dataset.time;
 
     confirmRescheduleButton.removeAttribute("disabled")
+})
 
-    rescheduleBookingForm.addEventListener("submit", function(event) {
+rescheduleBookingForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    booking.date = rescheduleDateInput.value;
-    booking.time = clickedSlot.dataset.time;
-
+    booking.date = selectedRescheduleDate;
+    booking.time = selectedRescheduleTime;
     booking.status = "rescheduled"
+
+
 
     bookingStatus.classList.add("rescheduled");
 
@@ -1036,9 +1055,11 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
     bookingDetailsView.removeAttribute("hidden");
     rescheduleBookingView.setAttribute("hidden", "");
 
+    selectedRescheduleDate = null;
+    selectedRescheduleTime = null;
+
     booking = null;
     })
-})
 
 // cancel booking process //
 

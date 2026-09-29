@@ -89,7 +89,9 @@ serviceSelectionForm.addEventListener("submit", function(event) {
         return service.value === booking.service;
     });
 
-        summaryService.textContent = matchingService.text;
+    booking.durationInMinutes = matchingService.duration;
+
+    summaryService.textContent = matchingService.text;
 
     const availableTrainers = trainers.filter(function(trainer) {
         return trainer.services.includes(booking.service);
@@ -228,7 +230,7 @@ function renderTimeSlot(timeSlot, trainer, container) {
         container.appendChild(timeSlotButton);
     }
 
-function generateTrainerSlots(selectedTrainer, selectedDay, container) {
+function generateTrainerSlots(selectedTrainer, selectedDay, container, chosenDate) {
     const trainerSchedule = selectedTrainer.schedule[selectedDay]
 
     if (trainerSchedule === null) {
@@ -248,6 +250,12 @@ function generateTrainerSlots(selectedTrainer, selectedDay, container) {
     });
 
     const serviceDuration = Number(matchingService.duration);
+
+    const trainerBookingsForDate = bookings.filter(function(existingBooking) {
+        return existingBooking.trainer === selectedTrainer.value &&
+        existingBooking.date === selectedDate &&
+        existingBooking.status === "confirmed";
+    })
 
     const availableTimes = [];
 
@@ -308,7 +316,7 @@ bookingDateInput.addEventListener("change", function(event){
             return trainer.services.includes(booking.service);
         });
         eligibleTrainers.forEach(function(trainer) {
-            generateTrainerSlots(trainer, selectedDay, appointmentSlots)
+            generateTrainerSlots(trainer, selectedDay, appointmentSlots, selectedDateInput)
         });
 
         loadingMessage.setAttribute("hidden", "");
@@ -317,7 +325,7 @@ bookingDateInput.addEventListener("change", function(event){
             return trainer.value === booking.trainer;
         });
 
-        generateTrainerSlots(selectedTrainer, selectedDay, appointmentSlots)
+        generateTrainerSlots(selectedTrainer, selectedDay, appointmentSlots, selectedDateInput)
         loadingMessage.setAttribute("hidden", "");
     }
 
@@ -516,7 +524,7 @@ function renderSummary() {
 
     const reviewPrice = document.createElement("reviewPrice");
     reviewPrice.className = ("review-price");
-    reviewPrice.textContent = matchingService.price
+    reviewPrice.textContent = matchingService.priceText;
 
     primaryDiv1.appendChild(reviewLabel);
     primaryDiv1.appendChild(sessionType);
@@ -580,7 +588,12 @@ const confirmationDate = document.getElementById("confirmation-summary-date")
 const confirmationTime = document.getElementById("confirmation-summary-time")
 
 
+
 function generateBookingReference() {
+    let bookingReference;
+    let referenceAlreadyExists;
+
+    do {
     const generatedNumber = Math.random();
 
     const selectedNumber = generatedNumber * 1000000;
@@ -588,6 +601,11 @@ function generateBookingReference() {
     const bookingNumber = Math.trunc(selectedNumber);
 
     const bookingReference = "FF-" + bookingNumber;
+
+    referenceAlreadyExists = bookings.some(function(existingBooking){
+        return existingBooking.id === bookingReference;
+    });
+    } while (referenceAlreadyExists);
 
     bookingReferenceValue.textContent = bookingReference;
 
@@ -1158,7 +1176,6 @@ confirmCancellationButton.addEventListener("click", function(event) {
 })
 
 // next step double booking prevention //
-// next steps for this: we need to prevent bookings being made with the same reference
 // we need to remove the appointment slot for said trainer at booking.time for that date 
 // allow slots to open back up if rescheduled and remove slots that have been taken via reschedulling
 // once an appointment slot is cancelled allow the slot to become available again

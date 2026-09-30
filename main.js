@@ -12,6 +12,7 @@ const customerDetailsStepSection = document.getElementById("customer-details-ste
 const reviewStepSection = document.getElementById("review-step")
 const bookingConfirmation = document.getElementById("confirmation-step")
 const manageBookingSection = document.getElementById("manage-booking-section")
+const bookingDetails = document.getElementById("booking-details-view")
 
 const headerManageBookingButton = document.getElementById("manage-booking-button")
 
@@ -175,6 +176,12 @@ trainerSelectionForm.addEventListener("submit", function(event) {
 
     bookingDateInput.setAttribute('min', today)
 
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 30);
+    const max = maxDate.toISOString().split('T')[0];
+
+    bookingDateInput.setAttribute('max', max);
+
     dateTimeStepSection.scrollIntoView({behavior: "smooth"})
 })
 
@@ -253,9 +260,13 @@ function generateTrainerSlots(selectedTrainer, selectedDay, container, chosenDat
 
     const trainerBookingsForDate = bookings.filter(function(existingBooking) {
         return existingBooking.trainer === selectedTrainer.value &&
-        existingBooking.date === selectedDate &&
+        existingBooking.date === chosenDate &&
         existingBooking.status === "confirmed";
     })
+
+    const date = new Date();
+
+    const cuttOffTime = new Date(date.getTime() + 12 * 60 * 60 * 1000)
 
     const availableTimes = [];
 
@@ -264,7 +275,31 @@ function generateTrainerSlots(selectedTrainer, selectedDay, container, chosenDat
         currentTime + serviceDuration <= endMinutes;
         currentTime += 15
     ) {
-        availableTimes.push(currentTime)
+        const candidateStart = currentTime;
+        const candidateEnd = candidateStart + serviceDuration;
+
+        const candidateHour = Math.trunc(candidateStart / 60);
+        const candidateMinutes = candidateStart % 60;
+
+        // we have candidate hour and canidate minute logging correctly 
+        // next step we need chosenDate year, month and day, split
+        
+        const hasConflict = trainerBookingsForDate.some(function(existingBooking) {
+            const time = existingBooking.time;
+
+            const [timeHours,timeMinutes] = time.split(":").map(Number);
+
+            const startMinutes = timeHours * 60 + timeMinutes;
+
+            const endMinutes = startMinutes + existingBooking.durationInMinutes;
+
+            return candidateStart < endMinutes &&
+            candidateEnd > startMinutes;
+        })
+        if(hasConflict === false) {
+            availableTimes.push(currentTime)
+        }
+
     }
 
     const formattdTimes = availableTimes.map(function(time) {
@@ -600,12 +635,12 @@ function generateBookingReference() {
 
     const bookingNumber = Math.trunc(selectedNumber);
 
-    const bookingReference = "FF-" + bookingNumber;
+    bookingReference = "FF-" + bookingNumber;
 
     referenceAlreadyExists = bookings.some(function(existingBooking){
         return existingBooking.id === bookingReference;
     });
-    } while (referenceAlreadyExists);
+    } while (referenceAlreadyExists === true);
 
     bookingReferenceValue.textContent = bookingReference;
 
@@ -665,8 +700,6 @@ confirmBookingButton.addEventListener("click", function(event) {
     confirmationService.textContent = matchingService.text;
     confirmationTrainer.textContent = matchingTrainer.text;
     confirmationDate.textContent = booking.date;
-
-    console.log(booking.time);
     confirmationTime.textContent = booking.time;
 
     booking.status = "confirmed"
@@ -675,11 +708,11 @@ confirmBookingButton.addEventListener("click", function(event) {
 
     saveBookings();
 
-    booking = null;
+    booking = {};
 })
 
 function resetBookingFlow() {
-    booking = null;
+    booking = {};
 
     serviceSelectionForm.reset();
     trainerSelectionForm.reset();
@@ -761,6 +794,7 @@ headerManageBookingButton.addEventListener("click", function(event) {
     manageBookingSection.removeAttribute("hidden");
     bookingLookUpView.removeAttribute("hidden");
 
+    bookingDetailsView.setAttribute("hidden", "");
     bookingLayout.setAttribute("hidden", "");
 
     const findBookingButton = document.getElementById("find-booking-button")
@@ -948,7 +982,7 @@ updateDetailsForm.addEventListener("submit", function(event) {
     saveBookings();
     renderMatchingBooking();
 
-    booking = null;
+    booking = {};
 
     bookingDetailsView.removeAttribute("hidden");
     updateDetailsView.setAttribute("hidden", "");
@@ -1071,16 +1105,45 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
 rescheduleBookingForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    booking.date = selectedRescheduleDate;
-    booking.time = selectedRescheduleTime;
+    console.log(booking);
+
+    let SelectedRescheduleService = booking.service;
+    let selectedRescheduleTrainer = booking.trainer;
+    let selectedRescheduleForm = booking.form;
+    let selectedRescheduleDuration = booking.durationInMinutes;
+    let selectedReschedluePrice = booking.price;
+
     booking.status = "rescheduled"
 
+    bookingStatus.classList.add(booking.status);
 
-
-    bookingStatus.classList.add("rescheduled");
+    bookings.push(booking);
 
     saveBookings();
-    renderMatchingBooking();
+
+    booking = {};
+
+    booking.service = SelectedRescheduleService;
+    booking.trainer = selectedRescheduleTrainer;
+    booking.form = selectedRescheduleForm;
+    booking.durationInMinutes = selectedRescheduleDuration;
+    booking.price = selectedReschedluePrice;
+
+    booking.date = selectedRescheduleDate;
+    booking.time = selectedRescheduleTime;
+    booking.status = "confirmed";
+
+    generateBookingReference();
+
+    bookingStatus.classList.remove("rescheduled")
+    bookingStatus.classList.add(booking.status);
+
+    bookings.push(booking);
+
+    saveBookings();
+
+    saveBookings();
+    renderMatchingBooking(); 
 
     bookingDetailsView.removeAttribute("hidden");
     rescheduleBookingView.setAttribute("hidden", "");
@@ -1088,7 +1151,7 @@ rescheduleBookingForm.addEventListener("submit", function(event) {
     selectedRescheduleDate = null;
     selectedRescheduleTime = null;
 
-    booking = null;
+    booking = {};
     })
 
 // cancel booking process //
@@ -1167,7 +1230,7 @@ confirmCancellationButton.addEventListener("click", function(event) {
 
     saveBookings();
 
-    booking = null;
+    booking = {};
 
     bookingLookUpView.removeAttribute("hidden");
     cancelBookingView.setAttribute("hidden", "");
@@ -1175,11 +1238,6 @@ confirmCancellationButton.addEventListener("click", function(event) {
     bookingLookUpForm.reset();
 })
 
-// next step double booking prevention //
-// we need to remove the appointment slot for said trainer at booking.time for that date 
-// allow slots to open back up if rescheduled and remove slots that have been taken via reschedulling
-// once an appointment slot is cancelled allow the slot to become available again
-
-// 12 hour and 30 day rule need implenting //
+// 12 hour and 30 day rule need implenting finishing up inside generateTrainerSlots//
 
 // more form validation //

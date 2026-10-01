@@ -280,10 +280,14 @@ function generateTrainerSlots(selectedTrainer, selectedDay, container, chosenDat
 
         const candidateHour = Math.trunc(candidateStart / 60);
         const candidateMinutes = candidateStart % 60;
-
-        // we have candidate hour and canidate minute logging correctly 
-        // next step we need chosenDate year, month and day, split
         
+        const [chosenYear, chosenMonth, chosenDay] = chosenDate.split("-").map(Number)
+
+        const candidateDateTime = new Date(
+            chosenYear, chosenMonth - 1, chosenDay,
+            candidateHour, candidateMinutes
+        )
+
         const hasConflict = trainerBookingsForDate.some(function(existingBooking) {
             const time = existingBooking.time;
 
@@ -296,7 +300,7 @@ function generateTrainerSlots(selectedTrainer, selectedDay, container, chosenDat
             return candidateStart < endMinutes &&
             candidateEnd > startMinutes;
         })
-        if(hasConflict === false) {
+        if(hasConflict === false && candidateDateTime >= cuttOffTime) {
             availableTimes.push(currentTime)
         }
 
@@ -474,17 +478,107 @@ customerDetailsBackButton.addEventListener("click", function(event) {
 customerDetailsForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
+    let formIsValid = true
+
     const firstNameInput = document.getElementById("first-name");
     const lastNameInput = document.getElementById("last-name");
     const emailInput = document.getElementById("email");
     const phoneInput = document.getElementById("phone");
 
+    
+    const firstNameError = document.getElementById("first-name-error");
+    const lastNameError = document.getElementById("last-name-error");
+    const emailError = document.getElementById("email-error");
+    const phoneError = document.getElementById("phone-error");
+
+    const firstName = firstNameInput.value;
+    const firstNameTrim = firstName.trim();
+
+    if (firstNameTrim.length <= 1 || firstNameTrim.length > 50) {
+        firstNameInput.setAttribute("aria-invalid", "true");
+
+        firstNameError.removeAttribute("hidden", "");
+        firstNameError.classList.add("field-error");
+
+        formIsValid = false
+    } else {
+        firstNameInput.setAttribute("aria-invalid", "false");
+
+        firstNameError.setAttribute("hidden", "");
+        firstNameError.classList.remove("field-error");
+    }
+
+
+    const lastName = lastNameInput.value
+    const lastNameTrim = lastName.trim();
+
+    if (lastNameTrim.length <= 1 || lastNameTrim.length > 50) {
+        lastNameInput.setAttribute("aria-invalid", "true");
+
+        lastNameError.removeAttribute("hidden");
+        lastNameError.classList.add("field-error");
+
+        formIsValid = false
+    } else {
+        lastNameInput.setAttribute("aria-invalid", "false");
+
+        lastNameError.setAttribute("hidden", "");
+        lastNameError.classList.remove("field-error");
+    }
+
+    const email = emailInput.value
+    const emailTrim = email.trim();
+
+    const validEmailCheck = emailInput.validity.valid;
+
+    if (validEmailCheck === false) {
+        emailInput.setAttribute("aria-invalid", "true");
+
+        emailError.removeAttribute("hidden");
+        emailError.classList.add("field-error");
+
+        formIsValid = false
+    } else {
+        emailInput.setAttribute("aria-invalid", "false");
+
+        emailError.setAttribute("hidden", "");
+        emailError.classList.remove("field-error");
+    }
+
+    const phone = phoneInput.value;
+    const phoneTrim = phone.replace(/[\s-]/g, "");
+
+    const digitsOnly = /^\d+$/;
+
+    const digitCheck = digitsOnly.test(phoneTrim);
+
+    const startsWithZero = phoneTrim.startsWith("0");
+
+    if (digitCheck === false || startsWithZero === false || phoneTrim.length !== 11) {
+        phoneInput.setAttribute("aria-invalid", "true");
+
+        phoneError.removeAttribute("hidden");
+        phoneError.classList.add("field-error");
+
+        formIsValid = false;
+    } else {
+        phoneInput.setAttribute("aria-invalid", "false");
+
+        phoneError.setAttribute("hidden", "");
+        phoneError.classList.remove("field-error");
+    }
+
+    if (formIsValid === false) {
+        return;
+    }
+
+
     const form = {
-        firstName: firstNameInput.value,
-        lastName: lastNameInput.value,
-        email:  emailInput.value,
-        phone: phoneInput.value
-    };
+        firstName: firstNameTrim,
+        lastName: lastNameTrim,
+        email:  emailTrim,
+        phone: phoneTrim
+    }
 
     booking.form = form;
 
@@ -1237,7 +1331,3 @@ confirmCancellationButton.addEventListener("click", function(event) {
 
     bookingLookUpForm.reset();
 })
-
-// 12 hour and 30 day rule need implenting finishing up inside generateTrainerSlots//
-
-// more form validation //

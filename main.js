@@ -1,3 +1,5 @@
+const mainPage = document.getElementById("main-booking-page")
+
 const bookingLayout = document.getElementById("booking-layout")
 
 const serviceSelectionForm = document.getElementById("service-selection-form")
@@ -12,7 +14,6 @@ const customerDetailsStepSection = document.getElementById("customer-details-ste
 const reviewStepSection = document.getElementById("review-step")
 const bookingConfirmation = document.getElementById("confirmation-step")
 const manageBookingSection = document.getElementById("manage-booking-section")
-const bookingDetails = document.getElementById("booking-details-view")
 
 const headerManageBookingButton = document.getElementById("manage-booking-button")
 
@@ -112,7 +113,7 @@ serviceSelectionForm.addEventListener("submit", function(event) {
         }
     })
 
-    trainerStepSection.scrollIntoView({behavior: "smooth"})
+    progressBar.scrollIntoView({behavior: "smooth"})
 })
 
 // data booking step 2 trainer //
@@ -182,7 +183,7 @@ trainerSelectionForm.addEventListener("submit", function(event) {
 
     bookingDateInput.setAttribute('max', max);
 
-    dateTimeStepSection.scrollIntoView({behavior: "smooth"})
+    progressBar.scrollIntoView({behavior: "smooth"})
 })
 
 // data booking step 3 date & time //
@@ -441,7 +442,7 @@ dateTimeSelectionForm.addEventListener("submit", function(event) {
 
     reviewBookingButton.removeAttribute("disabled");
 
-    customerDetailsStepSection.scrollIntoView({behavior: "smooth"});
+    progressBar.scrollIntoView({behavior: "smooth"})
 })
 
 // booking step 4 customer details // 
@@ -475,24 +476,37 @@ customerDetailsBackButton.addEventListener("click", function(event) {
     summaryDate.textContent = "Not selected"
 })
 
-customerDetailsForm.addEventListener("submit", function(event) {
-    event.preventDefault();
-
+function validateCustomerDetails(
+    firstNameInput,
+    lastNameInput,
+    emailInput,
+    phoneInput,
+    firstNameError,
+    lastNameError,
+    emailError,
+    phoneError
+) {
     let formIsValid = true
-
-    const firstNameInput = document.getElementById("first-name");
-    const lastNameInput = document.getElementById("last-name");
-    const emailInput = document.getElementById("email");
-    const phoneInput = document.getElementById("phone");
-
-    
-    const firstNameError = document.getElementById("first-name-error");
-    const lastNameError = document.getElementById("last-name-error");
-    const emailError = document.getElementById("email-error");
-    const phoneError = document.getElementById("phone-error");
 
     const firstName = firstNameInput.value;
     const firstNameTrim = firstName.trim();
+
+    const lastName = lastNameInput.value
+    const lastNameTrim = lastName.trim();
+
+    const email = emailInput.value
+    const emailTrim = email.trim();
+
+    const validEmailCheck = emailInput.validity.valid;
+
+    const phone = phoneInput.value;
+    const phoneTrim = phone.replace(/[\s-]/g, "");
+
+    const digitsOnly = /^\d+$/;
+
+    const digitCheck = digitsOnly.test(phoneTrim);
+
+    const startsWithZero = phoneTrim.startsWith("0");
 
     if (firstNameTrim.length <= 1 || firstNameTrim.length > 50) {
         firstNameInput.setAttribute("aria-invalid", "true");
@@ -508,10 +522,6 @@ customerDetailsForm.addEventListener("submit", function(event) {
         firstNameError.classList.remove("field-error");
     }
 
-
-    const lastName = lastNameInput.value
-    const lastNameTrim = lastName.trim();
-
     if (lastNameTrim.length <= 1 || lastNameTrim.length > 50) {
         lastNameInput.setAttribute("aria-invalid", "true");
 
@@ -525,11 +535,6 @@ customerDetailsForm.addEventListener("submit", function(event) {
         lastNameError.setAttribute("hidden", "");
         lastNameError.classList.remove("field-error");
     }
-
-    const email = emailInput.value
-    const emailTrim = email.trim();
-
-    const validEmailCheck = emailInput.validity.valid;
 
     if (validEmailCheck === false) {
         emailInput.setAttribute("aria-invalid", "true");
@@ -545,15 +550,6 @@ customerDetailsForm.addEventListener("submit", function(event) {
         emailError.classList.remove("field-error");
     }
 
-    const phone = phoneInput.value;
-    const phoneTrim = phone.replace(/[\s-]/g, "");
-
-    const digitsOnly = /^\d+$/;
-
-    const digitCheck = digitsOnly.test(phoneTrim);
-
-    const startsWithZero = phoneTrim.startsWith("0");
-
     if (digitCheck === false || startsWithZero === false || phoneTrim.length !== 11) {
         phoneInput.setAttribute("aria-invalid", "true");
 
@@ -568,17 +564,50 @@ customerDetailsForm.addEventListener("submit", function(event) {
         phoneError.classList.remove("field-error");
     }
 
-    if (formIsValid === false) {
+    return {
+        isValid: formIsValid,
+        firstName: firstNameTrim,
+        lastName: lastNameTrim,
+        email: emailTrim,
+        phone: phoneTrim
+    };
+}
+
+customerDetailsForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const firstNameInput = document.getElementById("first-name");
+    const lastNameInput = document.getElementById("last-name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+
+    const firstNameError = document.getElementById("first-name-error");
+    const lastNameError = document.getElementById("last-name-error");
+    const emailError = document.getElementById("email-error");
+    const phoneError = document.getElementById("phone-error");
+
+    const validationResult = validateCustomerDetails(
+        firstNameInput,
+        lastNameInput,
+        emailInput,
+        phoneInput,
+        firstNameError,
+        lastNameError,
+        emailError,
+        phoneError
+    );
+
+    if (validationResult.isValid === false) {
         return;
     }
 
 
     const form = {
-        firstName: firstNameTrim,
-        lastName: lastNameTrim,
-        email:  emailTrim,
-        phone: phoneTrim
-    }
+        firstName: validationResult.firstName,
+        lastName: validationResult.lastName,
+        email: validationResult.email,
+        phone: validationResult.phone
+    };
 
     booking.form = form;
 
@@ -596,6 +625,8 @@ customerDetailsForm.addEventListener("submit", function(event) {
     progressStep5.classList.add("is-active")
 
     renderSummary();
+
+    progressBar.scrollIntoView({behavior: "smooth"})
 })
 
 // booking step 5 review  //
@@ -803,6 +834,8 @@ confirmBookingButton.addEventListener("click", function(event) {
     saveBookings();
 
     booking = {};
+
+    mainPage.scrollIntoView({behavior: "smooth"})
 })
 
 function resetBookingFlow() {
@@ -812,6 +845,7 @@ function resetBookingFlow() {
     trainerSelectionForm.reset();
     dateTimeSelectionForm.reset();
     customerDetailsForm.reset();
+    bookingLookUpForm.reset();
 
     appointmentSlots.innerHTML = "";
 
@@ -851,6 +885,14 @@ function resetBookingFlow() {
     progressStep3.classList.remove("is-complete");
     progressStep4.classList.remove("is-complete");
     progressStep5.classList.remove("is-complete");
+
+    progressStep2.classList.remove("is-active");
+    progressStep3.classList.remove("is-active");
+    progressStep4.classList.remove("is-active");
+    progressStep5.classList.remove("is-active");
+
+    progressStep1.classList.add("is-active");
+
 
     progressStep1.classList.add("is-active");
 
@@ -894,6 +936,10 @@ headerManageBookingButton.addEventListener("click", function(event) {
     const findBookingButton = document.getElementById("find-booking-button")
 
     findBookingButton.removeAttribute("disabled");
+
+    progressStep1.classList.remove("is-active");
+
+    manageBookingSection.scrollIntoView({behavior: "smooth"});
 })
 
 // book a new session buttons // 
@@ -913,6 +959,28 @@ newSessionButtons.forEach(button => {
         updateDetailsView.setAttribute("hidden", "");
     });
 });
+
+// find another booking button //
+
+const findAnotherBookingButton = document.getElementById("find-another-booking-button")
+
+findAnotherBookingButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    resetBookingFlow();
+
+    manageBookingSection.removeAttribute("hidden");
+    bookingLookUpView.removeAttribute("hidden");
+
+    bookingDetailsView.setAttribute("hidden", "");
+    bookingLayout.setAttribute("hidden", "");
+
+    const findBookingButton = document.getElementById("find-booking-button")
+
+    findBookingButton.removeAttribute("disabled");
+
+    manageBookingSection.scrollIntoView({behavior: "smooth"})
+})
 
 
 
@@ -974,15 +1042,57 @@ const bookingDetailsView = document.getElementById("booking-details-view")
 bookingLookUpForm.addEventListener("submit", function(event){
     event.preventDefault();
 
+    let formIsValid = true;
+
     const bookingReferenceInput = document.getElementById("booking-reference-input")
     const bookingReference =  bookingReferenceInput.value
+
+    const referenceError = document.getElementById("look-up-reference-error")
+
+    if (bookingReference.startsWith("FF-")) {
+        bookingReferenceInput.setAttribute("aria-invalid", "false")
+
+        referenceError.setAttribute("hidden", "")
+        referenceError.classList.remove("field-error")
+    } else {
+        bookingReferenceInput.setAttribute("aria-invalid", "true")
+
+        referenceError.removeAttribute("hidden");
+        referenceError.classList.add("field-error")
+
+        formIsValid = false;
+    }
 
     const bookingEmailInput = document.getElementById("booking-email-input")
     const bookingEmail = bookingEmailInput.value
 
+    const emailError = document.getElementById("look-up-email-error")
+
+    const bookingEmailTrim = bookingEmail.trim();
+
+    const validEmailCheck = bookingEmailInput.validity.valid;
+
+    if (validEmailCheck === false) {
+        bookingEmailInput.setAttribute("aria-invalid", "true");
+
+        emailError.removeAttribute("hidden");
+        emailError.classList.add("field-error");
+
+        formIsValid = false;
+    } else {
+        bookingEmailInput.setAttribute("aria-invalid", "false");
+
+        emailError.setAttribute("hidden", "");
+        emailError.classList.remove("field-error");
+    }
+
+    if (formIsValid === false) {
+        return;
+    }
+
 
     const matchingBooking = bookings.find(function(booking) {
-        if (booking.id === bookingReference && booking.form.email === bookingEmail) {
+        if (booking.id === bookingReference && booking.form.email === bookingEmailTrim) {
             return booking
         }
     })
@@ -993,6 +1103,12 @@ if (booking !== undefined) {
         bookingDetailsView.removeAttribute("hidden");
         bookingLookUpView.setAttribute("hidden", "");
 
+        bookingStatus.textContent = booking.status;
+
+        bookingStatus.classList.remove("confirmed");
+        bookingStatus.classList.remove("rescheduled");
+        bookingStatus.classList.remove("cancelled");
+        bookingStatus.classList.add(booking.status);
         renderMatchingBooking();
     } else {
         bookingNotFoundMessage.removeAttribute("hidden");
@@ -1017,6 +1133,8 @@ manageCurrentBookingButton.addEventListener("click", function(event) {
     console.log(booking);
 
     renderMatchingBooking();
+
+    manageBookingSection.scrollIntoView({behavior: "smooth"});
 })
 
 // update customer details process //
@@ -1052,26 +1170,40 @@ cancelDetailsUpdateButton.addEventListener("click", function(event) {
 updateDetailsForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    const customerNewNameInput = document.getElementById("update-customer-name");
-    const customerNewEmailInput = document.getElementById("update-customer-email");
-    const customerNewPhoneInput = document.getElementById("update-customer-phone");
+    const newfirstNameInput = document.getElementById("update-customer-first-name");
+    const newLastNameInput = document.getElementById("update-customer-last-name");
+    const newEmailInput = document.getElementById("update-customer-email");
+    const newPhoneInput = document.getElementById("update-customer-phone");
 
-    const updatedCustomerName =  customerNewNameInput.value;
-    const updatedCustomerEmail = customerNewEmailInput.value;
-    const updatedCustomerPhone = customerNewPhoneInput.value;
+    const newFirstNameError = document.getElementById("new-first-name-error");
+    const newLastNameError = document.getElementById("new-last-name-error");
+    const newEmailError = document.getElementById("new-email-error");
+    const newPhoneError = document.getElementById("new-phone-error");
 
-    const nameParts = updatedCustomerName.split(" ")
+    const validationResult = validateCustomerDetails(
+        newfirstNameInput,
+        newLastNameInput,
+        newEmailInput,
+        newPhoneInput,
+        newFirstNameError,
+        newLastNameError,
+        newEmailError,
+        newPhoneError
+    )
 
-    const updatedFirstName = nameParts[0];
+    if (validationResult === false) {
+        return;
+    }
 
-    const lastNames = nameParts.slice(1);
 
-    const updatedLastName = lastNames.join(" ");
+    const form = {
+        firstName: validationResult.firstName,
+        lastName: validationResult.lastName,
+        email: validationResult.email,
+        phone: validationResult.phone
+    }
 
-    booking.form.firstName = updatedFirstName;
-    booking.form.lastName = updatedLastName;
-    booking.form.email = updatedCustomerEmail;
-    booking.form.phone = updatedCustomerPhone;
+    booking.form = form;
 
     saveBookings();
     renderMatchingBooking();
@@ -1157,7 +1289,7 @@ rescheduleDateInput.addEventListener("change", function(event) {
         return trainer.value === booking.trainer;
         }); 
 
-        generateTrainerSlots(selectedTrainer, selectedDay, rescheduleAppointmenSlots);
+        generateTrainerSlots(selectedTrainer, selectedDay, rescheduleAppointmenSlots, selectedDateInput);
 
     const rescheduleNoAvailability = document.getElementById("reschedule-no-availability-message");
 
@@ -1199,42 +1331,29 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
 rescheduleBookingForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
-    console.log(booking);
-
-    let SelectedRescheduleService = booking.service;
-    let selectedRescheduleTrainer = booking.trainer;
-    let selectedRescheduleForm = booking.form;
-    let selectedRescheduleDuration = booking.durationInMinutes;
-    let selectedReschedluePrice = booking.price;
-
-    booking.status = "rescheduled"
-
-    bookingStatus.classList.add(booking.status);
-
-    bookings.push(booking);
-
-    saveBookings();
+    const oldBooking = booking;;
 
     booking = {};
 
-    booking.service = SelectedRescheduleService;
-    booking.trainer = selectedRescheduleTrainer;
-    booking.form = selectedRescheduleForm;
-    booking.durationInMinutes = selectedRescheduleDuration;
-    booking.price = selectedReschedluePrice;
+    booking.service = oldBooking.service;
+    booking.trainer = oldBooking.trainer;
+    booking.form = oldBooking.form;
+    booking.durationInMinutes = oldBooking.durationInMinutes;
+    booking.price = oldBooking.price;
 
     booking.date = selectedRescheduleDate;
     booking.time = selectedRescheduleTime;
     booking.status = "confirmed";
 
+    booking.rescheduledFrom = oldBooking.id;
+
     generateBookingReference();
 
-    bookingStatus.classList.remove("rescheduled")
-    bookingStatus.classList.add(booking.status);
+    oldBooking.rescheduledTo = booking.id;
+
+    oldBooking.status = "rescheduled";
 
     bookings.push(booking);
-
-    saveBookings();
 
     saveBookings();
     renderMatchingBooking(); 
@@ -1244,8 +1363,6 @@ rescheduleBookingForm.addEventListener("submit", function(event) {
 
     selectedRescheduleDate = null;
     selectedRescheduleTime = null;
-
-    booking = {};
     })
 
 // cancel booking process //
@@ -1302,6 +1419,8 @@ cancelBookingButton.addEventListener("click", function(event) {
 
         booking.cancellationFee = totalFee;
     }
+
+    manageBookingSection.scrollIntoView({behavior: "smooth"})
 })
 
 const keepBookingButton = document.getElementById("keep-booking-button")
@@ -1329,5 +1448,5 @@ confirmCancellationButton.addEventListener("click", function(event) {
     bookingLookUpView.removeAttribute("hidden");
     cancelBookingView.setAttribute("hidden", "");
 
-    bookingLookUpForm.reset();
+    resetBookingFlow();
 })

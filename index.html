@@ -45,7 +45,7 @@
     </header>
 
 
-    <main class="booking-page">
+    <main class="booking-page" id="main-booking-page">
 
         <section class="booking-introduction">
             <p class="eyebrow">Personal Training</p>
@@ -1236,7 +1236,7 @@
                             </p>
                         </div>
         
-                        <form id="booking-lookup-form">
+                        <form id="booking-lookup-form" novalidate>
         
                             <div class="form-grid">
         
@@ -1253,6 +1253,14 @@
                                         placeholder="e.g. FF-482731"
                                         required
                                     >
+
+                                    <p
+                                    class="field-error"
+                                    id="look-up-reference-error"
+                                    hidden
+                                >
+                                    Enter a valid Booking Reference.
+                                </p>
                                 </div>
         
                                 <div class="form-group">
@@ -1267,6 +1275,14 @@
                                         autocomplete="email"
                                         required
                                     >
+
+                                    <p
+                                    class="field-error"
+                                    id="look-up-email-error"
+                                    hidden
+                                >
+                                    Enter a valid email address.
+                                </p>
                                 </div>
         
                             </div>
@@ -1487,17 +1503,49 @@
                             <div class="form-grid">
         
                                 <div class="form-group">
-                                    <label for="update-customer-name">
-                                        Name
+                                    <label for="update-customer-first-name">
+                                        First Name
                                     </label>
         
                                     <input
-                                        id="update-customer-name"
-                                        name="customerName"
+                                        id="update-customer-first-name"
+                                        name="customerFirstName"
                                         type="text"
-                                        autocomplete="name"
+                                        autocomplete="given-name"
                                         required
                                     >
+
+                                    <p
+                                    class="field-error"
+                                    id="new-first-name-error"
+                                    hidden
+                                    >
+                                        Enter your first name.
+                                    </p>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="update-customer-last-name">
+                                        Last Name
+                                    </label>
+        
+                                    <input
+                                        id="update-customer-last-name"
+                                        name="customerLastName"
+                                        type="text"
+                                        autocomplete="famil-name"
+                                        required
+                                    >
+
+                                    <p
+                                    class="field-error"
+                                    id="new-last-name-error"
+                                    hidden
+                                    >
+                                        Enter your last name.
+                                    </p>
+
                                 </div>
         
                                 <div class="form-group">
@@ -1512,6 +1560,15 @@
                                         autocomplete="email"
                                         required
                                     >
+
+                                    <p
+                                    class="field-error"
+                                    id="new-email-error"
+                                    hidden
+                                    >
+                                        Enter your email adress.
+                                    </p>
+
                                 </div>
         
                                 <div class="form-group">
@@ -1526,6 +1583,15 @@
                                         autocomplete="tel"
                                         required
                                     >
+
+                                    <p
+                                    class="field-error"
+                                    id="new-phone-error"
+                                    hidden
+                                    >
+                                        Enter your phone number.
+                                    </p>
+
                                 </div>
         
                             </div>

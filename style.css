@@ -1866,6 +1866,16 @@ p {
     box-sizing: border-box;
 }
 
+/* Temporary debugging only */
+#reschedule-date-input,
+#booking-date-input {
+    outline: 2px solid red;
+}
+
+.form-group {
+    outline: 2px solid blue;
+}
+
 
 /* ========================================
     CANCELLATION

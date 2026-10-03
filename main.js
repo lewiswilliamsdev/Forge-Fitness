@@ -15,6 +15,8 @@ const reviewStepSection = document.getElementById("review-step")
 const bookingConfirmation = document.getElementById("confirmation-step")
 const manageBookingSection = document.getElementById("manage-booking-section")
 
+const bookingUnavailableSection = document.getElementById("booking-unavailable-step")
+
 const headerManageBookingButton = document.getElementById("manage-booking-button")
 
 
@@ -217,6 +219,36 @@ const dateTimeBackButton = dateTimeSelectionForm.querySelector(".button-secondar
 
 const bookingDateInput = document.getElementById("booking-date-input");
 
+function isSlotAvailable(trainer, date, startTime, duration, bookingIdToIgnore) {
+    const [timeHours, timeMinutes] = startTime.split(":").map(Number);
+
+    const candidateStart = timeHours * 60 + timeMinutes;
+
+    const candidateEnd = candidateStart + duration;
+
+    const trainerBookingsForDate = bookings.filter(function(existingBooking) {
+        return existingBooking.trainer === trainer &&
+        existingBooking.date === date &&
+        existingBooking.status === "confirmed" &&
+        existingBooking.id !== bookingIdToIgnore;
+    });
+
+    const hasConflict = trainerBookingsForDate.some(function(existingBooking) {
+            const time = existingBooking.time;
+
+            const [timeHours,timeMinutes] = time.split(":").map(Number);
+
+            const startMinutes = timeHours * 60 + timeMinutes;
+
+            const endMinutes = startMinutes + existingBooking.durationInMinutes;
+
+            return candidateStart < endMinutes &&
+            candidateEnd > startMinutes;
+        })
+
+        return !hasConflict;
+}
+
 function renderTimeSlot(timeSlot, trainer, container) {
             const timeSlotButton = document.createElement("button")
             timeSlotButton.className = ("appointment-slot")
@@ -323,11 +355,18 @@ function generateTrainerSlots(selectedTrainer, selectedDay, container, chosenDat
 }
 
 let selectedDate = null
+let selectedTime = null
+
+const dateTimeFormContinueButton = dateTimeSelectionForm.querySelector(".button-primary");
 
 bookingDateInput.addEventListener("change", function(event){
     event.preventDefault();
 
     appointmentSlots.innerHTML = "";
+
+    selectedTime = null;
+
+    dateTimeFormContinueButton.setAttribute("disabled", "")
 
     const loadingMessage = document.getElementById("availability-loading-message");
 
@@ -380,8 +419,6 @@ bookingDateInput.addEventListener("change", function(event){
     }
 })
 
-let selectedTime = null
-
 appointmentSlots.addEventListener("click", function(event) {
     event.preventDefault();
 
@@ -399,9 +436,9 @@ appointmentSlots.addEventListener("click", function(event) {
 
     selectedTime = clickedSlot.dataset.time;
 
-    clickedSlot.classList.add("is-selected");
+    booking.trainer = clickedSlot.dataset.trainer;
 
-    const dateTimeFormContinueButton = dateTimeSelectionForm.querySelector(".button-primary");
+    clickedSlot.classList.add("is-selected");
 
     dateTimeFormContinueButton.removeAttribute("disabled")
 })
@@ -775,6 +812,15 @@ function generateBookingReference() {
 confirmBookingButton.addEventListener("click", function(event) {
     event.preventDefault();
 
+    const slotIsAvailable = isSlotAvailable(booking.trainer, booking.date, booking.time, booking.durationInMinutes);
+
+    if (slotIsAvailable === false) {
+        bookingUnavailableSection.removeAttribute("hidden");
+        return;
+    }
+
+    bookingUnavailableSection.setAttribute("hidden", "");
+
     reviewStepSection.setAttribute("hidden", "");
     bookingConfirmation.removeAttribute("hidden");
 
@@ -890,9 +936,6 @@ function resetBookingFlow() {
     progressStep3.classList.remove("is-active");
     progressStep4.classList.remove("is-active");
     progressStep5.classList.remove("is-active");
-
-    progressStep1.classList.add("is-active");
-
 
     progressStep1.classList.add("is-active");
 
@@ -1146,10 +1189,9 @@ const updateDetailsForm = document.getElementById("update-booking-details-form")
 updateDetailsButton.addEventListener("click", function(event) {
     event.preventDefault();
 
-    if (booking.status === "cancelled") {
+    if (booking.status === "cancelled" || booking.rescheduledTo !== undefined) {
         return;
     }
-
     updateDetailsView.removeAttribute("hidden");
     bookingDetailsView.setAttribute("hidden", "");
 
@@ -1191,7 +1233,7 @@ updateDetailsForm.addEventListener("submit", function(event) {
         newPhoneError
     )
 
-    if (validationResult === false) {
+    if (validationResult.isValid === false) {
         return;
     }
 
@@ -1208,8 +1250,6 @@ updateDetailsForm.addEventListener("submit", function(event) {
     saveBookings();
     renderMatchingBooking();
 
-    booking = {};
-
     bookingDetailsView.removeAttribute("hidden");
     updateDetailsView.setAttribute("hidden", "");
 })
@@ -1221,13 +1261,50 @@ const rescheduleBookingView = document.getElementById("reschedule-booking-view")
 const rescheduleBookingForm = document.getElementById("reschedule-booking-form");
 const rescheduleDateInput = document.getElementById("reschedule-date-input");
 const rescheduleAppointmenSlots = document.getElementById("reschedule-appointment-slots")
+const rescheduleUnavailable = document.getElementById("reschedule-unavailable-view")
 
 rescheduleButton.addEventListener("click", function(event) {
     event.preventDefault();
 
-    if (booking.status === "cancelled") {
+    if (booking.status === "cancelled" || booking.rescheduledTo !== undefined) {
         return;
     }
+
+    const bookingDate = booking.date
+
+    const [year, month, day] = bookingDate.split("-").map(Number)
+
+    const bookingTime = booking.time
+
+    const [hour, minutes] = bookingTime.split(":").map(Number);
+
+    const dateTime = new Date(
+        year, month - 1, day,
+        hour, minutes
+    )
+
+    const date = new Date();
+
+    const cuttOffTime = new Date(date.getTime() + 12 * 60 * 60 * 1000)
+
+    if (dateTime < cuttOffTime) {
+        rescheduleBookingView.setAttribute("hidden", "")
+
+        rescheduleUnavailable.removeAttribute("hidden")
+        return;
+    }
+
+    rescheduleUnavailable.setAttribute("hidden", "")
+
+    const today = new Date().toISOString().split('T')[0];
+
+    rescheduleDateInput.setAttribute('min', today)
+
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 30);
+    const max = maxDate.toISOString().split('T')[0];
+
+    rescheduleDateInput.setAttribute('max', max);
 
     rescheduleDateInput.value = "";
 
@@ -1253,6 +1330,15 @@ rescheduleButton.addEventListener("click", function(event) {
     trainer.textContent = matchingTrainer.text;
 }) 
 
+const rescheduleUnavailableBackButton = document.getElementById("reschedule-unavailable-back-button")
+
+rescheduleUnavailableBackButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    rescheduleBookingView.setAttribute("hidden", "");
+    bookingDetailsView.removeAttribute("hidden");
+})
+
 const cancelRescheduleButton = document.getElementById("cancel-reschedule-button")
 
 cancelRescheduleButton.addEventListener("click", function(event) {
@@ -1262,10 +1348,17 @@ cancelRescheduleButton.addEventListener("click", function(event) {
     rescheduleBookingView.setAttribute("hidden", "");
 })
 
+let selectedRescheduleDate = null;
+let selectedRescheduleTime = null;
+
 rescheduleDateInput.addEventListener("change", function(event) {
     event.preventDefault();
 
     rescheduleAppointmenSlots.innerHTML = "";
+
+    selectedRescheduleTime = null;
+
+    confirmRescheduleButton.setAttribute("disabled", "");
 
     const selectedDateInput = rescheduleDateInput.value;
 
@@ -1302,9 +1395,6 @@ rescheduleDateInput.addEventListener("change", function(event) {
 
 const confirmRescheduleButton = document.getElementById("confirm-reschedule-button")
 
-let selectedRescheduleDate = null;
-let selectedRescheduleTime = null;
-
 rescheduleAppointmenSlots.addEventListener("click", function(event) {
     event.preventDefault();
 
@@ -1330,6 +1420,15 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
 
 rescheduleBookingForm.addEventListener("submit", function(event) {
     event.preventDefault();
+
+    const slotIsAvailable = isSlotAvailable(booking.trainer, selectedRescheduleDate, selectedRescheduleTime, booking.durationInMinutes, booking.id);
+
+    if (slotIsAvailable === false) {
+        bookingUnavailableSection.removeAttribute("hidden");
+        return;
+    }
+
+    bookingUnavailableSection.setAttribute("hidden", "");
 
     const oldBooking = booking;;
 
@@ -1373,10 +1472,12 @@ const cancelBookingView = document.getElementById("cancel-booking-view")
 const freeCancellationMessage = document.getElementById("free-cancellation-message")
 const lateCancellationMessage = document.getElementById("late-cancellation-message")
 
+let bookingCancellationFee;
+
 cancelBookingButton.addEventListener("click", function(event) {
     event.preventDefault();
 
-    if (booking.status === "cancelled") {
+    if (booking.status === "cancelled" || booking.rescheduledTo !== undefined) {
         return;
     }
 
@@ -1395,6 +1496,9 @@ cancelBookingButton.addEventListener("click", function(event) {
     const differenceInMs = appointmentObject - currentDateTime;
 
     const differenceInHours = (differenceInMs / 1000 / 60 / 60);
+
+    freeCancellationMessage.setAttribute("hidden", "");
+    lateCancellationMessage.setAttribute("hidden", "");
 
     if (differenceInHours >= cancellationPolicy.noticePeriodValue) {
         freeCancellationMessage.removeAttribute("hidden");
@@ -1417,7 +1521,7 @@ cancelBookingButton.addEventListener("click", function(event) {
 
         cancellationFeeAmount.textContent = "£"+totalFee;
 
-        booking.cancellationFee = totalFee;
+        bookingCancellationFee = totalFee;
     }
 
     manageBookingSection.scrollIntoView({behavior: "smooth"})
@@ -1441,6 +1545,8 @@ confirmCancellationButton.addEventListener("click", function(event) {
 
     booking.status = "cancelled";
 
+    booking.cancellationFee = bookingCancellationFee;
+
     saveBookings();
 
     booking = {};
@@ -1450,3 +1556,7 @@ confirmCancellationButton.addEventListener("click", function(event) {
 
     resetBookingFlow();
 })
+
+// check reschedule aunavaible rule is working correctly 
+// line 1003 htnml, we need to make it so if there
+//  is a price change when trying to reschedule the message appears

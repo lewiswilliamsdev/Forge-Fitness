@@ -2029,6 +2029,136 @@ input[type="date"] {
     width: 100%;
 }
 
+/* ========================================
+    BOOKING UNAVAILABLE
+======================================== */
+
+.booking-unavailable-step {
+    text-align: center;
+}
+
+.booking-unavailable-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 4rem;
+    height: 4rem;
+
+    margin: 0 auto 1.25rem;
+
+    border-radius: 50%;
+
+    background-color: #fee2e2;
+    color: #b91c1c;
+
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.booking-unavailable-step .eyebrow {
+    color: #b91c1c;
+}
+
+.booking-unavailable-step h2 {
+    margin-bottom: 0.75rem;
+}
+
+.booking-unavailable-message {
+    max-width: 32rem;
+
+    margin: 0 auto 1.75rem;
+
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+.booking-unavailable-step .button {
+    width: 100%;
+}
+
+@media (min-width: 48rem) {
+    .booking-unavailable-step .button {
+        width: auto;
+    }
+}
+
+/* ========================================
+    RESCHEDULE UNAVAILABLE
+======================================== */
+
+.reschedule-unavailable-card {
+    text-align: center;
+}
+
+.reschedule-unavailable-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 4rem;
+    height: 4rem;
+
+    margin: 0 auto 1.25rem;
+
+    border-radius: 50%;
+
+    background-color: #fee2e2;
+    color: #b91c1c;
+
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.reschedule-unavailable-card .manage-card-heading {
+    margin-bottom: 1.5rem;
+}
+
+.reschedule-unavailable-card .manage-card-heading p {
+    max-width: 32rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.reschedule-unavailable-notice {
+    padding: 1rem;
+
+    margin-bottom: 1.5rem;
+
+    border-radius: 0.75rem;
+
+    background-color: #f8fafc;
+
+    text-align: left;
+}
+
+.reschedule-unavailable-notice strong {
+    display: block;
+
+    margin-bottom: 0.35rem;
+}
+
+.reschedule-unavailable-notice p {
+    margin: 0;
+
+    color: var(--color-text-muted);
+    line-height: 1.6;
+}
+
+.reschedule-unavailable-card .manage-form-actions {
+    justify-content: center;
+}
+
+.reschedule-unavailable-card .button {
+    width: 100%;
+}
+
+@media (min-width: 48rem) {
+    .reschedule-unavailable-card .button {
+        width: auto;
+    }
+}
+
 
 /* ========================================
     CANCELLATION - TABLET+

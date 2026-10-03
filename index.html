@@ -1047,6 +1047,36 @@
 
                 </section>
 
+                <section
+                    class="booking-step booking-unavailable-step"
+                    id="booking-unavailable-step"
+                    aria-labelledby="booking-unavailable-heading"
+                    hidden
+                >
+                    <div class="booking-unavailable-icon" aria-hidden="true">
+                        !
+                    </div>
+                
+                    <p class="eyebrow">Appointment unavailable</p>
+                
+                    <h2 id="booking-unavailable-heading">
+                        That time is no longer available
+                    </h2>
+                
+                    <p class="booking-unavailable-message">
+                        Another booking has been confirmed for this time since you selected it.
+                        Please choose another available appointment.
+                    </p>
+                
+                    <button
+                        class="button button-primary"
+                        id="choose-another-time-button"
+                        type="button"
+                    >
+                        Choose another time
+                    </button>
+                </section>
+
 
 
                 <!-- CONFIRMATION -->
@@ -1734,6 +1764,51 @@
         
                         </form>
         
+                    </div>
+                </div>
+
+                <div
+                    class="manage-booking-view"
+                    id="reschedule-unavailable-view"
+                    hidden
+                >
+                    <div class="manage-card reschedule-unavailable-card">
+                
+                        <div
+                            class="reschedule-unavailable-icon"
+                            aria-hidden="true"
+                        >
+                            !
+                        </div>
+                
+                        <div class="manage-card-heading">
+                            <h2>This appointment can’t be rescheduled</h2>
+                
+                            <p>
+                                Appointments can only be rescheduled more than
+                                12 hours before the scheduled start time.
+                            </p>
+                        </div>
+                
+                        <div class="reschedule-unavailable-notice">
+                            <strong>Need to make a change?</strong>
+                
+                            <p>
+                                You can return to your booking details to review
+                                your cancellation options.
+                            </p>
+                        </div>
+                
+                        <div class="manage-form-actions">
+                            <button
+                                class="button button-primary"
+                                id="reschedule-unavailable-back-button"
+                                type="button"
+                            >
+                                Back to booking
+                            </button>
+                        </div>
+                
                     </div>
                 </div>
         

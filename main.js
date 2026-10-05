@@ -1263,6 +1263,8 @@ const rescheduleDateInput = document.getElementById("reschedule-date-input");
 const rescheduleAppointmenSlots = document.getElementById("reschedule-appointment-slots")
 const rescheduleUnavailable = document.getElementById("reschedule-unavailable-view")
 
+const priceChangeNotice = document.getElementById("price-change-notice")
+
 rescheduleButton.addEventListener("click", function(event) {
     event.preventDefault();
 
@@ -1418,28 +1420,14 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
     confirmRescheduleButton.removeAttribute("disabled")
 })
 
-rescheduleBookingForm.addEventListener("submit", function(event) {
-    event.preventDefault();
+let oldBooking;
 
-    const slotIsAvailable = isSlotAvailable(booking.trainer, selectedRescheduleDate, selectedRescheduleTime, booking.durationInMinutes, booking.id);
+// generateRescheduledBooking //
 
-    if (slotIsAvailable === false) {
-        bookingUnavailableSection.removeAttribute("hidden");
-        return;
-    }
-
-    bookingUnavailableSection.setAttribute("hidden", "");
-
-    const oldBooking = booking;;
-
-    booking = {};
-
+function generateRescheduledBooking() {
     booking.service = oldBooking.service;
     booking.trainer = oldBooking.trainer;
     booking.form = oldBooking.form;
-    booking.durationInMinutes = oldBooking.durationInMinutes;
-    booking.price = oldBooking.price;
-
     booking.date = selectedRescheduleDate;
     booking.time = selectedRescheduleTime;
     booking.status = "confirmed";
@@ -1462,6 +1450,103 @@ rescheduleBookingForm.addEventListener("submit", function(event) {
 
     selectedRescheduleDate = null;
     selectedRescheduleTime = null;
+}
+
+rescheduleBookingForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const matchingService = serviceValues.find(function(service) {
+    return service.value === booking.service;
+    });
+
+
+    const slotIsAvailable = isSlotAvailable(booking.trainer, selectedRescheduleDate, selectedRescheduleTime, matchingService.duration, booking.id);
+
+    if (slotIsAvailable === false) {
+        bookingUnavailableSection.removeAttribute("hidden");
+        return;
+    }
+
+    bookingUnavailableSection.setAttribute("hidden", "");
+
+    oldBooking = booking;;
+
+    booking = {};
+
+    booking.price = matchingService.price;
+    booking.durationInMinutes = matchingService.duration;
+
+    if (booking.price !== oldBooking.price) {
+        priceChangeNotice.removeAttribute("hidden");
+        rescheduleBookingView.setAttribute("hidden", "");
+    
+        const newBookingPrice = document.getElementById("new-booking-price");
+    
+        newBookingPrice.textContent = "£" + booking.price;
+    }
+
+    if (booking.price === oldBooking.price) {
+        const slotIsAvailable = isSlotAvailable(booking.trainer, selectedRescheduleDate, selectedRescheduleTime, matchingService.duration, booking.id);
+
+        if (slotIsAvailable === false) {
+        bookingUnavailableSection.removeAttribute("hidden");
+        return;
+        }
+    } else {
+            generateRescheduledBooking();
+            oldBooking = null;
+        }
+})
+
+    const acceptPriceChange = document.getElementById("accept-price-change")
+
+    const confirmPriceChangeBookingButton = document.getElementById("confirm-price-change-booking-button")
+
+    acceptPriceChange.addEventListener("change", function(event) {
+        event.preventDefault();
+
+        if (event.target.checked) {
+            confirmPriceChangeBookingButton.removeAttribute("disabled")
+        } else {
+            confirmPriceChangeBookingButton.setAttribute("disabled", "");
+        }
+    })
+
+    confirmPriceChangeBookingButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        const slotIsAvailable = isSlotAvailable(booking.trainer, selectedRescheduleDate, selectedRescheduleTime, matchingService.duration, booking.id);
+
+        if (slotIsAvailable === false) {
+        bookingUnavailableSection.removeAttribute("hidden");
+        return;
+        } else {
+        generateRescheduledBooking();
+
+        oldBooking = null;
+
+        acceptPriceChange.checked = false;
+
+        confirmPriceChangeBookingButton.setAttribute("disabled", "");
+
+        priceChangeNotice.setAttribute("hidden", "");
+        }
+    })
+
+    const priceChangeBackButton = document.getElementById("price-change-back-button")
+
+    priceChangeBackButton.addEventListener("click", function(event) {
+        event.preventDefault();
+
+        booking = oldBooking;
+        oldBooking= null;
+
+        acceptPriceChange.checked = false;
+
+        confirmPriceChangeBookingButton.setAttribute("disabled", "");
+
+        priceChangeNotice.setAttribute("hidden", "");
+        rescheduleBookingView.removeAttribute("hidden");
     })
 
 // cancel booking process //
@@ -1501,6 +1586,7 @@ cancelBookingButton.addEventListener("click", function(event) {
     lateCancellationMessage.setAttribute("hidden", "");
 
     if (differenceInHours >= cancellationPolicy.noticePeriodValue) {
+        bookingCancellationFee = null;
         freeCancellationMessage.removeAttribute("hidden");
     
         const noticePeriod = document.getElementById("notice-period-text");
@@ -1549,14 +1635,9 @@ confirmCancellationButton.addEventListener("click", function(event) {
 
     saveBookings();
 
-    booking = {};
-
-    bookingLookUpView.removeAttribute("hidden");
-    cancelBookingView.setAttribute("hidden", "");
-
     resetBookingFlow();
-})
 
-// check reschedule aunavaible rule is working correctly 
-// line 1003 htnml, we need to make it so if there
-//  is a price change when trying to reschedule the message appears
+    cancelBookingView.setAttribute("hidden", "");
+    manageBookingSection.removeAttribute("hidden");
+    bookingLookUpView.removeAttribute("hidden");
+})

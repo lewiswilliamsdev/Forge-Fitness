@@ -484,7 +484,7 @@ dateTimeSelectionForm.addEventListener("submit", function(event) {
 
 // booking step 4 customer details // 
 
-const customerDetailsBackButton = customerDetailsStepSection.querySelector(".button-secondary")
+const customerDetailsBackButton = document.getElementById("customer-details-back-button")
 customerDetailsBackButton.addEventListener("click", function(event) {
     event.preventDefault();
 
@@ -610,95 +610,6 @@ function validateCustomerDetails(
     };
 }
 
-customerDetailsForm.addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const firstNameInput = document.getElementById("first-name");
-    const lastNameInput = document.getElementById("last-name");
-    const emailInput = document.getElementById("email");
-    const phoneInput = document.getElementById("phone");
-
-    const firstNameError = document.getElementById("first-name-error");
-    const lastNameError = document.getElementById("last-name-error");
-    const emailError = document.getElementById("email-error");
-    const phoneError = document.getElementById("phone-error");
-
-    const validationResult = validateCustomerDetails(
-        firstNameInput,
-        lastNameInput,
-        emailInput,
-        phoneInput,
-        firstNameError,
-        lastNameError,
-        emailError,
-        phoneError
-    );
-
-    if (validationResult.isValid === false) {
-        return;
-    }
-
-
-    const form = {
-        firstName: validationResult.firstName,
-        lastName: validationResult.lastName,
-        email: validationResult.email,
-        phone: validationResult.phone
-    };
-
-    booking.form = form;
-
-    firstNameInput.value = "";
-    lastNameInput.value = "";
-    emailInput.value = "";
-    phoneInput.value = "";
-
-    customerDetailsStepSection.setAttribute("hidden", "");
-    reviewStepSection.removeAttribute("hidden");
-
-    progressStep4.classList.remove("is-active");
-    progressStep4.classList.add("is-complete");
-
-    progressStep5.classList.add("is-active")
-
-    renderSummary();
-
-    progressBar.scrollIntoView({behavior: "smooth"})
-})
-
-// booking step 5 review  //
-
-const reviewBackButton = reviewStepSection.querySelector(".button-secondary") 
-
-reviewBackButton.addEventListener("click", function(event) {
-    event.preventDefault();
-
-    delete booking.form;
-
-    const firstNameInput = document.getElementById("first-name");
-    const lastNameInput = document.getElementById("last-name");
-    const emailInput = document.getElementById("email");
-    const phoneInput = document.getElementById("phone");
-
-    firstNameInput.value = "";
-    lastNameInput.value = "";
-    emailInput.value = "";
-    phoneInput.value = "";
-
-    customerDetailsStepSection.removeAttribute("hidden");
-
-    reviewStepSection.setAttribute("hidden", "")
-
-    progressStep4.classList.add("is-active");
-    progressStep4.classList.remove("is-complete");
-
-    progressStep5.classList.remove("is-active");
-
-    summaryTotal.textContent = "—";
-
-    reviewCard.innerHTML = "";
-})
-
 function renderSummary() {
     const reviewPrimary = document.createElement("div");
     reviewPrimary.className = ("review-primary")
@@ -771,7 +682,107 @@ function renderSummary() {
 
     booking.price = matchingService.price;
     summaryTotal.textContent = matchingService.priceText;
+
+    confirmBookingButton.removeAttribute("disabled");
 }
+
+customerDetailsForm.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const firstNameInput = document.getElementById("first-name");
+    const lastNameInput = document.getElementById("last-name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+
+    const firstNameError = document.getElementById("first-name-error");
+    const lastNameError = document.getElementById("last-name-error");
+    const emailError = document.getElementById("email-error");
+    const phoneError = document.getElementById("phone-error");
+
+    const validationResult = validateCustomerDetails(
+        firstNameInput,
+        lastNameInput,
+        emailInput,
+        phoneInput,
+        firstNameError,
+        lastNameError,
+        emailError,
+        phoneError
+    );
+
+    if (validationResult.isValid === false) {
+        return;
+    }
+
+    const form = {
+        firstName: validationResult.firstName,
+        lastName: validationResult.lastName,
+        email: validationResult.email,
+        phone: validationResult.phone
+    };
+
+    booking.form = form;
+
+    firstNameInput.value = "";
+    lastNameInput.value = "";
+    emailInput.value = "";
+    phoneInput.value = "";
+
+    customerDetailsStepSection.setAttribute("hidden", "");
+    reviewStepSection.removeAttribute("hidden");
+
+    progressStep4.classList.remove("is-active");
+    progressStep4.classList.add("is-complete");
+
+    progressStep5.classList.add("is-active")
+
+    renderSummary();
+
+    progressBar.scrollIntoView({behavior: "smooth"})
+})
+
+// booking step 5 review  //
+
+const reviewBackButton = reviewStepSection.querySelector(".button-secondary") 
+
+reviewBackButton.addEventListener("click", function(event) {
+    event.preventDefault();
+
+    event.stopPropagation();
+
+    delete booking.form;
+
+    customerDetailsForm.reset();
+
+    const firstNameInput = document.getElementById("first-name");
+    const lastNameInput = document.getElementById("last-name");
+    const emailInput = document.getElementById("email");
+    const phoneInput = document.getElementById("phone");
+
+    firstNameInput.value = "";
+    lastNameInput.value = "";
+    emailInput.value = "";
+    phoneInput.value = "";
+
+    customerDetailsStepSection.removeAttribute("hidden");
+
+    reviewStepSection.setAttribute("hidden", "")
+
+    progressStep4.classList.add("is-active");
+    progressStep4.classList.remove("is-complete");
+
+    progressStep5.classList.remove("is-active");
+
+    summaryTotal.textContent = "—";
+
+    reviewCard.innerHTML = "";
+
+    console.log("END BACK:", booking);
+
+setTimeout(function () {
+    console.log("AFTER BACK:", booking);
+}, 0);
+})
 
 // booking confirmation //
 
@@ -1061,10 +1072,10 @@ function renderMatchingBooking() {
     time.textContent = booking.time;
 
     const duration = document.getElementById("manage-duration");
-    duration.textContent = matchingService.durationText;
+    duration.textContent = booking.durationInMinutes + "" + " minutes";
 
     const price = document.getElementById("manage-price");
-    price.textContent = matchingService.price;
+    price.textContent = booking.price;
 
     const customerFullName = document.getElementById("manage-customer-name");
     customerFullName.textContent = `${booking.form.firstName} ${booking.form.lastName}`
@@ -1172,8 +1183,6 @@ manageCurrentBookingButton.addEventListener("click", function(event) {
     bookingDetailsView.removeAttribute("hidden")
 
     booking = bookings.at(-1);
-
-    console.log(booking);
 
     renderMatchingBooking();
 
@@ -1332,6 +1341,8 @@ rescheduleButton.addEventListener("click", function(event) {
     trainer.textContent = matchingTrainer.text;
 }) 
 
+const confirmRescheduleButton = document.getElementById("reschedule-continue-button")
+
 const rescheduleUnavailableBackButton = document.getElementById("reschedule-unavailable-back-button")
 
 rescheduleUnavailableBackButton.addEventListener("click", function(event) {
@@ -1342,13 +1353,6 @@ rescheduleUnavailableBackButton.addEventListener("click", function(event) {
 })
 
 const cancelRescheduleButton = document.getElementById("cancel-reschedule-button")
-
-cancelRescheduleButton.addEventListener("click", function(event) {
-    event.preventDefault();
-
-    bookingDetailsView.removeAttribute("hidden");
-    rescheduleBookingView.setAttribute("hidden", "");
-})
 
 let selectedRescheduleDate = null;
 let selectedRescheduleTime = null;
@@ -1395,7 +1399,7 @@ rescheduleDateInput.addEventListener("change", function(event) {
     }
 })
 
-const confirmRescheduleButton = document.getElementById("confirm-reschedule-button")
+
 
 rescheduleAppointmenSlots.addEventListener("click", function(event) {
     event.preventDefault();
@@ -1422,8 +1426,6 @@ rescheduleAppointmenSlots.addEventListener("click", function(event) {
 
 let oldBooking;
 
-// generateRescheduledBooking //
-
 function generateRescheduledBooking() {
     booking.service = oldBooking.service;
     booking.trainer = oldBooking.trainer;
@@ -1437,13 +1439,12 @@ function generateRescheduledBooking() {
     generateBookingReference();
 
     oldBooking.rescheduledTo = booking.id;
-
     oldBooking.status = "rescheduled";
 
     bookings.push(booking);
 
     saveBookings();
-    renderMatchingBooking(); 
+    renderMatchingBooking();
 
     bookingDetailsView.removeAttribute("hidden");
     rescheduleBookingView.setAttribute("hidden", "");
@@ -1452,15 +1453,52 @@ function generateRescheduledBooking() {
     selectedRescheduleTime = null;
 }
 
+
 rescheduleBookingForm.addEventListener("submit", function(event) {
     event.preventDefault();
 
+    // We are already in the price-change confirmation stage
+    if (oldBooking !== undefined && oldBooking !== null) {
+
+        if (acceptPriceChange.checked === false) {
+            return;
+        }
+
+        const slotIsAvailable = isSlotAvailable(
+            oldBooking.trainer,
+            selectedRescheduleDate,
+            selectedRescheduleTime,
+            booking.durationInMinutes,
+            oldBooking.id
+        );
+
+        if (slotIsAvailable === false) {
+            bookingUnavailableSection.removeAttribute("hidden");
+            return;
+        }
+
+        generateRescheduledBooking();
+
+        oldBooking = null;
+        acceptPriceChange.checked = false;
+        priceChangeNotice.setAttribute("hidden", "");
+
+        return;
+    }
+
+
+    // First Continue click
     const matchingService = serviceValues.find(function(service) {
-    return service.value === booking.service;
+        return service.value === booking.service;
     });
 
-
-    const slotIsAvailable = isSlotAvailable(booking.trainer, selectedRescheduleDate, selectedRescheduleTime, matchingService.duration, booking.id);
+    const slotIsAvailable = isSlotAvailable(
+        booking.trainer,
+        selectedRescheduleDate,
+        selectedRescheduleTime,
+        matchingService.duration,
+        booking.id
+    );
 
     if (slotIsAvailable === false) {
         bookingUnavailableSection.removeAttribute("hidden");
@@ -1469,85 +1507,59 @@ rescheduleBookingForm.addEventListener("submit", function(event) {
 
     bookingUnavailableSection.setAttribute("hidden", "");
 
-    oldBooking = booking;;
+    oldBooking = booking;
 
     booking = {};
 
     booking.price = matchingService.price;
     booking.durationInMinutes = matchingService.duration;
 
+    // Price changed
     if (booking.price !== oldBooking.price) {
-        priceChangeNotice.removeAttribute("hidden");
-        rescheduleBookingView.setAttribute("hidden", "");
-    
-        const newBookingPrice = document.getElementById("new-booking-price");
-    
+        const newBookingPrice =
+            document.getElementById("new-booking-price");
+
         newBookingPrice.textContent = "£" + booking.price;
+
+        priceChangeNotice.removeAttribute("hidden");
+
+        acceptPriceChange.checked = false;
+
+        // THIS is the part you were missing
+        confirmRescheduleButton.setAttribute("disabled", "");
+
+        return;
     }
 
-    if (booking.price === oldBooking.price) {
-        const slotIsAvailable = isSlotAvailable(booking.trainer, selectedRescheduleDate, selectedRescheduleTime, matchingService.duration, booking.id);
+    // No price change
+    generateRescheduledBooking();
+    oldBooking = null;
+});
 
-        if (slotIsAvailable === false) {
-        bookingUnavailableSection.removeAttribute("hidden");
-        return;
-        }
+const acceptPriceChange = document.getElementById("accept-price-change");
+
+acceptPriceChange.addEventListener("change", function(event) {
+    if (event.target.checked) {
+        confirmRescheduleButton.removeAttribute("disabled");
     } else {
-            generateRescheduledBooking();
-            oldBooking = null;
-        }
-})
+        confirmRescheduleButton.setAttribute("disabled", "");
+    }
+});
 
-    const acceptPriceChange = document.getElementById("accept-price-change")
+cancelRescheduleButton.addEventListener("click", function(event) {
+    event.preventDefault();
 
-    const confirmPriceChangeBookingButton = document.getElementById("confirm-price-change-booking-button")
-
-    acceptPriceChange.addEventListener("change", function(event) {
-        event.preventDefault();
-
-        if (event.target.checked) {
-            confirmPriceChangeBookingButton.removeAttribute("disabled")
-        } else {
-            confirmPriceChangeBookingButton.setAttribute("disabled", "");
-        }
-    })
-
-    confirmPriceChangeBookingButton.addEventListener("click", function(event) {
-        event.preventDefault();
-
-        const slotIsAvailable = isSlotAvailable(booking.trainer, selectedRescheduleDate, selectedRescheduleTime, matchingService.duration, booking.id);
-
-        if (slotIsAvailable === false) {
-        bookingUnavailableSection.removeAttribute("hidden");
-        return;
-        } else {
-        generateRescheduledBooking();
-
-        oldBooking = null;
-
-        acceptPriceChange.checked = false;
-
-        confirmPriceChangeBookingButton.setAttribute("disabled", "");
-
-        priceChangeNotice.setAttribute("hidden", "");
-        }
-    })
-
-    const priceChangeBackButton = document.getElementById("price-change-back-button")
-
-    priceChangeBackButton.addEventListener("click", function(event) {
-        event.preventDefault();
-
+    if (oldBooking !== undefined && oldBooking !== null) {
         booking = oldBooking;
-        oldBooking= null;
+        oldBooking = null;
+    }
 
-        acceptPriceChange.checked = false;
+    acceptPriceChange.checked = false;
 
-        confirmPriceChangeBookingButton.setAttribute("disabled", "");
-
-        priceChangeNotice.setAttribute("hidden", "");
-        rescheduleBookingView.removeAttribute("hidden");
-    })
+    priceChangeNotice.setAttribute("hidden", "");
+    rescheduleBookingView.setAttribute("hidden", "");
+    bookingDetailsView.removeAttribute("hidden");
+});
 
 // cancel booking process //
 
@@ -1600,8 +1612,6 @@ cancelBookingButton.addEventListener("click", function(event) {
         const cancellationFeeAmount = document.getElementById("cancellation-fee-amount");
 
         const bookingPrice = booking.price
-
-        console.log(bookingPrice)
 
         const totalFee = Number(bookingPrice * cancellationPolicy.cancellationFee).toFixed(2);
 

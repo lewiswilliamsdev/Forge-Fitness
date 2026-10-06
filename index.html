@@ -891,6 +891,7 @@
                         <div class="step-actions">
                             <button
                                 class="button button-secondary"
+                                id="customer-details-back-button"
                                 type="button"
                             >
                                 Back
@@ -1000,38 +1001,9 @@
                     </aside>
 
 
-                    <div
-                        class="price-change-notice"
-                        id="price-change-notice"
-                        hidden
-                    >
-                        <div>
-                            <h3>Your session price has changed</h3>
-
-                            <p>
-                                The rescheduled appointment has a new price.
-                                Review and accept it before continuing.
-                            </p>
-                        </div>
-
-                        <label class="confirmation-checkbox">
-                            <input
-                                type="checkbox"
-                                id="accept-price-change"
-                            >
-
-                            <span>
-                                I accept the new price of
-                                <strong id="new-booking-price">£45</strong>.
-                            </span>
-                        </label>
-                    </div>
-
-
                     <div class="step-actions">
                         <button
                             class="button button-secondary"
-                            id="price-change-back-button"
                             type="button"
                         >
                             Back
@@ -1039,9 +1011,8 @@
 
                         <button
                             class="button button-primary"
-                            id="confirm-price-change-booking-button"
+                            id="confirm-booking-button"
                             type="click"
-                            disabled
                         >
                             Confirm booking
                         </button>
@@ -1747,7 +1718,7 @@
         
                                 <button
                                     class="button button-primary"
-                                    id="confirm-reschedule-button"
+                                    id="reschedule-continue-button"
                                     type="submit"
                                     disabled
                                 >
@@ -1766,6 +1737,33 @@
         
                         </form>
         
+                    </div>
+
+                    <div
+                        class="price-change-notice"
+                        id="price-change-notice"
+                        hidden
+                    >
+                        <div>
+                            <h3>Your session price has changed</h3>
+
+                            <p>
+                                The rescheduled appointment has a new price.
+                                Review and accept it before continuing.
+                            </p>
+                        </div>
+
+                        <label class="confirmation-checkbox">
+                            <input
+                                type="checkbox"
+                                id="accept-price-change"
+                            >
+
+                            <span>
+                                I accept the new price of
+                                <strong id="new-booking-price">£45</strong>.
+                            </span>
+                        </label>
                     </div>
                 </div>
 

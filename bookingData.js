@@ -76,3 +76,4 @@ export const cancellationPolicy = {
     noticePeriodValue: 24, noticePeriodText: "24 hours", cancellationFee: 0.5, cancellationFeeText: "50%"
 }
 
+
